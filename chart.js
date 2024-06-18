@@ -243,6 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 magnifierOverlay.style.display = 'none';
                 const stockData = areaSeries.data();
                 resetLegend(stockData, currentRange);
+                legend.style.display = 'block';
                 return;
             }
             legend.style.display = 'none';
@@ -369,6 +370,20 @@ document.addEventListener('DOMContentLoaded', function() {
         percentageButton.addEventListener('mouseout', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
         percentageButton.addEventListener('mousedown', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.9)');
         percentageButton.addEventListener('mouseup', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
+
+        // Handle touch events for mobile
+        chartElement.addEventListener('touchstart', () => {
+            toolTip.style.display = 'block';
+            magnifierOverlay.style.display = 'block';
+        });
+
+        chartElement.addEventListener('touchend', () => {
+            toolTip.style.display = 'none';
+            magnifierOverlay.style.display = 'none';
+            const stockData = areaSeries.data();
+            resetLegend(stockData, currentRange);
+            legend.style.display = 'block';
+        });
     }
 
     let currentRange = '1D';
