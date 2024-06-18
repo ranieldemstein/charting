@@ -181,6 +181,19 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div style="font-size: 16px; font-family: 'Open Sans', sans-serif;">${date}</div>`;
         }
 
+        function updateLegendOnHover(param, seriesData, currentRange) {
+            const price = param.seriesData.get(seriesData);
+            if (price) {
+                const previousData = seriesData.data().find(data => data.time < param.time);
+                const change = previousData ? calculateChange(price.value, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
+                const dateStr = formatDate(param.time, currentRange);
+                toolTip.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+                                     <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.value.toFixed(2)}</div>
+                                     <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                     <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
+            }
+        }
+
         chart.subscribeCrosshairMove(param => {
             if (!param || !param.time) {
                 legend.style.display = 'block';
@@ -193,16 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             legend.style.display = 'none';
-            const price = param.seriesData.get(areaSeries);
-            if (price) {
-                const previousData = areaSeries.data().find(data => data.time < param.time);
-                const change = previousData ? calculateChange(price.value, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
-                const dateStr = formatDate(param.time, currentRange);
-                toolTip.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
-                                     <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.value.toFixed(2)}</div>
-                                     <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
-                                     <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
-            }
+            updateLegendOnHover(param, areaSeries, currentRange);
         });
 
         async function setChartRange(range) {
@@ -234,9 +238,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             const lastData = stockData[stockData.length - 1];
-            if (lastData) {
-                const previousData = stockData[stockData.length - 2];
-                const change = calculateChange(lastData.value, previousData.value);
+            const firstData = stockData[0];
+            if (lastData && firstData) {
+                const change = calculateChange(lastData.value, firstData.value);
                 setLegendText(symbolName, formatDate(lastData.time, range), formatPrice(lastData.value), change, range);
             }
             chart.timeScale().fitContent();
