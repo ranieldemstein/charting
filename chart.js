@@ -336,12 +336,12 @@ document.addEventListener('DOMContentLoaded', function() {
         ranges.forEach(range => {
             const button = document.createElement('button');
             button.innerText = range;
-            button.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: rgba(6, 203, 248, 0.5); border-radius: 5px; cursor: pointer; color: black;';
+            button.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: #333; border-radius: 5px; cursor: pointer; color: black;';
             button.addEventListener('click', () => setChartRange(range));
-            button.addEventListener('mouseover', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
-            button.addEventListener('mouseout', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
-            button.addEventListener('mousedown', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.9)');
-            button.addEventListener('mouseup', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
+            button.addEventListener('mouseover', () => button.style.backgroundColor = '#555');
+            button.addEventListener('mouseout', () => button.style.backgroundColor = '#333');
+            button.addEventListener('mousedown', () => button.style.backgroundColor = '#777');
+            button.addEventListener('mouseup', () => button.style.backgroundColor = '#555');
             buttonsContainer.appendChild(button);
         });
 
@@ -349,27 +349,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const priceButton = document.getElementById('toggle-price');
         const percentageButton = document.getElementById('toggle-percentage');
 
-        priceButton.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: rgba(6, 203, 248, 0.5); border-radius: 5px; cursor: pointer; color: black;';
+        priceButton.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: #333; border-radius: 5px; cursor: pointer; color: black;';
         priceButton.addEventListener('click', () => {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Normal,
             });
         });
-        priceButton.addEventListener('mouseover', () => priceButton.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
-        priceButton.addEventListener('mouseout', () => priceButton.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
-        priceButton.addEventListener('mousedown', () => priceButton.style.backgroundColor = 'rgba(6, 203, 248, 0.9)');
-        priceButton.addEventListener('mouseup', () => priceButton.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
+        priceButton.addEventListener('mouseover', () => priceButton.style.backgroundColor = '#555');
+        priceButton.addEventListener('mouseout', () => priceButton.style.backgroundColor = '#333');
+        priceButton.addEventListener('mousedown', () => priceButton.style.backgroundColor = '#777');
+        priceButton.addEventListener('mouseup', () => priceButton.style.backgroundColor = '#555');
 
-        percentageButton.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: rgba(6, 203, 248, 0.5); border-radius: 5px; cursor: pointer; color: black;';
+        percentageButton.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: #333; border-radius: 5px; cursor: pointer; color: black;';
         percentageButton.addEventListener('click', () => {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Percentage,
             });
         });
-        percentageButton.addEventListener('mouseover', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
-        percentageButton.addEventListener('mouseout', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
-        percentageButton.addEventListener('mousedown', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.9)');
-        percentageButton.addEventListener('mouseup', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
+        percentageButton.addEventListener('mouseover', () => percentageButton.style.backgroundColor = '#555');
+        percentageButton.addEventListener('mouseout', () => percentageButton.style.backgroundColor = '#333');
+        percentageButton.addEventListener('mousedown', () => percentageButton.style.backgroundColor = '#777');
+        percentageButton.addEventListener('mouseup', () => percentageButton.style.backgroundColor = '#555');
 
         // Handle touch events for mobile
         chartElement.addEventListener('touchstart', () => {
@@ -380,6 +380,11 @@ document.addEventListener('DOMContentLoaded', function() {
         chartElement.addEventListener('touchend', () => {
             toolTip.style.display = 'none';
             magnifierOverlay.style.display = 'none';
+            chart.applyOptions({
+                crosshair: {
+                    mode: LightweightCharts.CrosshairMode.Normal,
+                }
+            });
             const stockData = areaSeries.data();
             resetLegend(stockData, currentRange);
             legend.style.display = 'block';
