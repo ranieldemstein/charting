@@ -212,6 +212,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             legend.style.display = 'none';
+            toolTip.style.display = 'block';
+            magnifierOverlay.style.display = 'block';
             const date = new Date(param.time * 1000);
             const dateStr = currentRange === '1D' ? date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : date.toLocaleDateString('en-US');
             const data = param.seriesData.get(areaSeries);
@@ -337,12 +339,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create a gradient box for better readability
         const gradientBox = document.createElement('div');
-        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: 999;`; // Ensure gradient is above crosshair but below text
+        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1;`; // Ensure gradient is above crosshair but below text
         toolTip.appendChild(gradientBox);
 
         // Create a container for the tooltip text
         const toolTipText = document.createElement('div');
-        toolTipText.style = `position: relative; z-index: 1000;`; // Ensure tooltip text is above the gradient
+        toolTipText.style = `position: relative; z-index: 1;`; // Ensure tooltip text is above the gradient
         toolTip.appendChild(toolTipText);
 
         // update tooltip
