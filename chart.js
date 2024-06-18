@@ -196,17 +196,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         chart.subscribeCrosshairMove(param => {
             if (!param || !param.time) {
-                legend.style.display = 'block';
+                toolTip.style.display = 'none';
+                magnifierOverlay.style.display = 'none';
                 const lastData = areaSeries.data().slice(-1)[0];
                 if (lastData) {
-                    const previousData = areaSeries.data().slice(-2)[0];
-                    const change = calculateChange(lastData.value, previousData.value);
+                    const firstData = areaSeries.data()[0];
+                    const change = calculateChange(lastData.value, firstData.value);
                     setLegendText(symbolName, formatDate(lastData.time, currentRange), formatPrice(lastData.value), change, currentRange);
                 }
                 return;
             }
             legend.style.display = 'none';
             updateLegendOnHover(param, areaSeries, currentRange);
+            toolTip.style.display = 'block';
+            magnifierOverlay.style.display = 'block';
         });
 
         async function setChartRange(range) {
@@ -304,15 +307,20 @@ document.addEventListener('DOMContentLoaded', function() {
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
         container.appendChild(toolTip);
 
+        // Create the magnifier overlay with subtle shadow/glow
+        const magnifierOverlay = document.createElement('div');
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 999; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
+        container.appendChild(magnifierOverlay);
+
         // Create a gradient box for better readability
         const gradientBox = document.createElement('div');
         gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1;`;
         toolTip.appendChild(gradientBox);
 
-        // Create the magnifier overlay with subtle shadow/glow
-        const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 999; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
-        container.appendChild(magnifierOverlay);
+        // Create a container for the tooltip text
+        const toolTipText = document.createElement('div');
+        toolTipText.style = `position: relative; z-index: 1;`;
+        toolTip.appendChild(toolTipText);
 
         // update tooltip
         chart.subscribeCrosshairMove(param => {
@@ -326,39 +334,41 @@ document.addEventListener('DOMContentLoaded', function() {
             ) {
                 toolTip.style.display = 'none';
                 magnifierOverlay.style.display = 'none';
-            } else {
-                legend.style.display = 'none';
-                const date = new Date(param.time * 1000);
-                const dateStr = currentRange === '1D' ? date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : date.toLocaleDateString('en-US');
-                toolTip.style.display = 'block';
-                magnifierOverlay.style.display = 'block';
-                const data = param.seriesData.get(areaSeries);
-                const price = data.value !== undefined ? data.value : data.close;
-                const previousData = areaSeries.data().find(data => data.time < param.time);
-                const change = previousData ? calculateChange(price, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
-                toolTip.innerHTML = `<div style="position: relative;">
-                                        <div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
-                                        <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
-                                        <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
-                                        <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>
-                                    </div>`;
-
-                let left = param.point.x; // relative to timeScale
-                const timeScaleWidth = chart.timeScale().width();
-                const priceScaleWidth = chart.priceScale('left').width();
-                const halfTooltipWidth = toolTipWidth / 2;
-                left += priceScaleWidth - halfTooltipWidth;
-                left = Math.min(left, priceScaleWidth + timeScaleWidth - toolTipWidth);
-                left = Math.max(left, priceScaleWidth);
-
-                toolTip.style.left = left + 'px';
-                toolTip.style.top = 0 + 'px';
-
-                magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
-                magnifierOverlay.style.top = 0;
-                magnifierOverlay.style.width = `${toolTipWidth}px`;
-                magnifierOverlay.style.height = `${chartElement.clientHeight}px`;
+                const lastData = areaSeries.data().slice(-1)[0];
+                if (lastData) {
+                    const firstData = areaSeries.data()[0];
+                    const change = calculateChange(lastData.value, firstData.value);
+                    setLegendText(symbolName, formatDate(lastData.time, currentRange), formatPrice(lastData.value), change, currentRange);
+                }
+                return;
             }
+            legend.style.display = 'none';
+            const date = new Date(param.time * 1000);
+            const dateStr = currentRange === '1D' ? date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : date.toLocaleDateString('en-US');
+            const data = param.seriesData.get(areaSeries);
+            const price = data.value !== undefined ? data.value : data.close;
+            const previousData = areaSeries.data().find(data => data.time < param.time);
+            const change = previousData ? calculateChange(price, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
+            toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+                                    <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
+                                    <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                    <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
+
+            let left = param.point.x; // relative to timeScale
+            const timeScaleWidth = chart.timeScale().width();
+            const priceScaleWidth = chart.priceScale('left').width();
+            const halfTooltipWidth = toolTipWidth / 2;
+            left += priceScaleWidth - halfTooltipWidth;
+            left = Math.min(left, priceScaleWidth + timeScaleWidth - toolTipWidth);
+            left = Math.max(left, priceScaleWidth);
+
+            toolTip.style.left = left + 'px';
+            toolTip.style.top = 0 + 'px';
+
+            magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
+            magnifierOverlay.style.top = 0;
+            magnifierOverlay.style.width = `${toolTipWidth}px`;
+            magnifierOverlay.style.height = `${chartElement.clientHeight}px`;
         });
 
         chart.timeScale().fitContent();
