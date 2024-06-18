@@ -1,96 +1,105 @@
 html, body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  overflow: hidden;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    overflow: hidden;
 }
+
 #chart-container {
-  height: calc(100% - 50px); /* Adjusted to leave space for buttons */
-  width: 100%;
-  position: relative;
-  top: 0;
-  left: 0;
-  background: transparent;
+    height: calc(100% - 50px); /* Adjusted to leave space for buttons */
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    background: transparent;
 }
+
 #chart {
-  height: 100%;
-  width: 100%;
-  background: transparent;
+    height: 100%;
+    width: 100%;
+    background: transparent;
 }
+
 #legend {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1;
-  font-size: 14px;
-  font-family: Arial, sans-serif;
-  color: white;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
 }
+
 #controls-container {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  background: transparent; /* Make background transparent */
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    background: transparent; /* Make background transparent */
 }
+
 #buttons-container {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex: 1;
 }
+
 #toggle-container {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  flex: 1;
-  justify-content: flex-end;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex: 1;
+    justify-content: flex-end;
 }
+
 button {
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  padding: 6px 12px;
-  border: none;
-  background-color: rgba(6, 203, 248, 0.5);
-  border-radius: 5px;
-  cursor: pointer;
-  color: black;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    padding: 6px 12px;
+    border: none;
+    background-color: rgba(6, 203, 248, 0.5);
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
 }
+
 button:hover {
-  background-color: rgba(6, 203, 248, 0.7);
+    background-color: rgba(6, 203, 248, 0.7);
 }
+
 button:active {
-  background-color: rgba(6, 203, 248, 0.9);
+    background-color: rgba(6, 203, 248, 0.9);
 }
 
 @media (max-width: 768px) {
-  #chart-container {
-    width: 100vw;
-    left: 0;
-  }
-  #controls-container {
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 10px;
-  }
-  #buttons-container, #toggle-container {
-    width: 100%;
-    justify-content: space-between;
-  }
-  #buttons-container {
-    flex: 1;
-    justify-content: flex-start;
-  }
-  #toggle-container {
-    flex: 1;
-    justify-content: flex-end;
-  }
-  button {
-    padding: 6px 10px;
-  }
+    #chart-container {
+        width: 100vw;
+        left: 0;
+    }
+    #controls-container {
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+    }
+    #buttons-container, #toggle-container {
+        width: 100%;
+        justify-content: space-between;
+    }
+    #buttons-container {
+        flex: 1;
+        justify-content: flex-start;
+    }
+    #toggle-container {
+        flex: 1;
+        justify-content: flex-end;
+    }
+    button {
+        padding: 6px 10px;
+    }
 }
