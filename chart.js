@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case '1W':
                 fromDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                multiplier = 30;
-                timespan = 'minute';
+                multiplier = 1;
+                timespan = 'day';
                 break;
             case '1M':
                 fromDate = new Date(now.getTime());
@@ -208,7 +208,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('chart-container');
         const toolTipWidth = 150;
         const toolTip = document.createElement('div');
-        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border-radius: 4px 4px 0px 0px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border-radius: 4px 4px 0px 0px; border-bottom: none; font-family: 'Open
+        Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
         toolTip.style.background = `transparent`;
         toolTip.style.color = 'white';
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
@@ -216,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create the magnifier overlay with subtle shadow/glow
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 998; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 998;`;
         container.appendChild(magnifierOverlay);
 
         // Create a gradient box for better readability
@@ -229,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toolTipText.style = `position: relative; z-index: 1;`;
         toolTip.appendChild(toolTipText);
 
-        // update tooltip
+        // Update tooltip
         chart.subscribeCrosshairMove(param => {
             if (
                 param.point === undefined ||
@@ -382,7 +383,9 @@ document.addEventListener('DOMContentLoaded', function() {
             magnifierOverlay.style.display = 'none';
             chart.applyOptions({
                 crosshair: {
-                    mode: LightweightCharts.CrosshairMode.Normal,
+                    vertLine: {
+                        visible: false
+                    }
                 }
             });
             const stockData = areaSeries.data();
