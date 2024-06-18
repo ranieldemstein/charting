@@ -187,12 +187,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const previousData = seriesData.data().find(data => data.time < param.time);
                 const change = previousData ? calculateChange(price.value, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
                 const dateStr = formatDate(param.time, currentRange);
-                toolTip.innerHTML = `<div style="position: relative;">
-                                        <div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
-                                        <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
-                                        <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
-                                        <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>
-                                    </div>`;
+                toolTip.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+                                     <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.value.toFixed(2)}</div>
+                                     <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                     <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
             }
         }
 
@@ -306,15 +304,15 @@ document.addEventListener('DOMContentLoaded', function() {
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
         container.appendChild(toolTip);
 
-        // Create the magnifier overlay with subtle shadow/glow
-        const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 1001; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
-        container.appendChild(magnifierOverlay);
-
         // Create a gradient box for better readability
         const gradientBox = document.createElement('div');
-        gradientBox.style = `width: ${toolTipWidth}px; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1;`;
+        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1;`;
         toolTip.appendChild(gradientBox);
+
+        // Create the magnifier overlay with subtle shadow/glow
+        const magnifierOverlay = document.createElement('div');
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 999; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
+        container.appendChild(magnifierOverlay);
 
         // update tooltip
         chart.subscribeCrosshairMove(param => {
