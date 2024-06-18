@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     width: 2,
                     color: '#06cbf8', // Set crosshair color to #06cbf8
                     labelVisible: false,
+                    zIndex: -1, // Ensure crosshair is behind other elements
                 },
                 horzLine: {
                     visible: false, // Hide the horizontal crosshair line
@@ -187,30 +188,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const previousData = seriesData.data().find(data => data.time < param.time);
                 const change = previousData ? calculateChange(price.value, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
                 const dateStr = formatDate(param.time, currentRange);
-                toolTip.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+                toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
                                      <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.value.toFixed(2)}</div>
                                      <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
                                      <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
             }
         }
-
-        chart.subscribeCrosshairMove(param => {
-            if (!param || !param.time) {
-                toolTip.style.display = 'none';
-                magnifierOverlay.style.display = 'none';
-                const lastData = areaSeries.data().slice(-1)[0];
-                if (lastData) {
-                    const firstData = areaSeries.data()[0];
-                    const change = calculateChange(lastData.value, firstData.value);
-                    setLegendText(symbolName, formatDate(lastData.time, currentRange), formatPrice(lastData.value), change, currentRange);
-                }
-                return;
-            }
-            legend.style.display = 'none';
-            updateLegendOnHover(param, areaSeries, currentRange);
-            toolTip.style.display = 'block';
-            magnifierOverlay.style.display = 'block';
-        });
 
         async function setChartRange(range) {
             currentRange = range;
@@ -314,12 +297,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create a gradient box for better readability
         const gradientBox = document.createElement('div');
-        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1;`;
+        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: 999;`; // Ensure gradient is above crosshair but below text
         toolTip.appendChild(gradientBox);
 
         // Create a container for the tooltip text
         const toolTipText = document.createElement('div');
-        toolTipText.style = `position: relative; z-index: 1;`;
+        toolTipText.style = `position: relative; z-index: 1000;`; // Ensure tooltip text is above the gradient
         toolTip.appendChild(toolTipText);
 
         // update tooltip
