@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         console.log('Chart element found:', chartElement);
+        console.log('Chart element size:', chartElement.clientWidth, chartElement.clientHeight);
 
         const chart = LightweightCharts.createChart(chartElement, {
             width: chartElement.clientWidth,
