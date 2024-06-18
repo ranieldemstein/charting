@@ -220,9 +220,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         secondsVisible: false,
                         tickMarkFormatter: (time, tickMarkType, locale) => {
                             const date = new Date(time * 1000);
-                            return### Part 2:
-
-```javascript
                             return date.toLocaleDateString('en-US'); // Use local timezone
                         },
                     },
