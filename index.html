@@ -6,8 +6,17 @@
     <title>Stock Chart</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            overflow: hidden;
+        }
+
         #chart-container {
-            height: 500px; /* Set a fixed height for debugging */
+            height: calc(100% - 50px); /* Adjusted to leave space for buttons */
             width: 100%;
             position: relative;
             top: 0;
