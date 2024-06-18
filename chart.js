@@ -281,6 +281,23 @@ document.addEventListener('DOMContentLoaded', function() {
             const stockData = await fetchStockData(range);
             console.log('Stock data for range:', range, stockData);
             areaSeries.setData(stockData);
+
+            // Determine color based on price change
+            const firstData = stockData[0];
+            const lastData = stockData[stockData.length - 1];
+            const priceChange = lastData.value - firstData.value;
+            const isPositive = priceChange >= 0;
+
+            const topColor = isPositive ? '#06cbf8' : '#ff4441';
+            const bottomColor = isPositive ? 'rgba(6, 203, 248, 0.28)' : 'rgba(255, 68, 65, 0.28)';
+            const lineColor = isPositive ? '#06cbf8' : '#ff4441';
+
+            areaSeries.applyOptions({
+                topColor: topColor,
+                bottomColor: bottomColor,
+                lineColor: lineColor,
+            });
+
             if (range === '1D') {
                 chart.applyOptions({
                     timeScale: {
@@ -352,8 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
         percentageButton.addEventListener('mouseout', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
         percentageButton.addEventListener('mousedown', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.9)');
         percentageButton.addEventListener('mouseup', () => percentageButton.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
-
-        setChartRange('1D'); // Set 1D as default
     }
 
     let currentRange = '1D';
