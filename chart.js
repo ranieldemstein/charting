@@ -86,6 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        console.log('Chart element found:', chartElement);
+
         const chart = LightweightCharts.createChart(chartElement, {
             width: chartElement.clientWidth,
             height: chartElement.clientHeight,
@@ -134,6 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
             },
         });
 
+        console.log('Chart created:', chart);
+
         const areaSeries = chart.addAreaSeries({
             topColor: '#06cbf8',
             bottomColor: 'rgba(6, 203, 248, 0.28)',
@@ -141,6 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
             lineWidth: 2,
             crossHairMarkerVisible: true, // Ensure crosshair marker is visible
         });
+
+        console.log('Area series added:', areaSeries);
 
         const legend = document.getElementById('legend');
         const symbolName = stockTicker;
@@ -201,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
         async function setChartRange(range) {
             currentRange = range;
             const stockData = await fetchStockData(range);
+            console.log('Stock data for range:', range, stockData);
             areaSeries.setData(stockData);
             if (range === '1D') {
                 chart.applyOptions({
