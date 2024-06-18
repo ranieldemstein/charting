@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     width: 2,
                     color: '#06cbf8', // Set crosshair color to #06cbf8
                     labelVisible: false,
-                    zIndex: -1, // Ensure crosshair is behind other elements
                 },
                 horzLine: {
                     visible: false, // Hide the horizontal crosshair line
@@ -195,6 +194,52 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        function resetLegend(stockData, range) {
+            const lastData = stockData.slice(-1)[0];
+            if (lastData) {
+                const firstData = stockData[0];
+                const change = calculateChange(lastData.value, firstData.value);
+                setLegendText(symbolName, formatDate(lastData.time, range), formatPrice(lastData.value), change, range);
+            }
+        }
+
+        chart.subscribeCrosshairMove(param => {
+            if (!param || !param.time) {
+                toolTip.style.display = 'none';
+                magnifierOverlay.style.display = 'none';
+                const stockData = areaSeries.data();
+                resetLegend(stockData, currentRange);
+                return;
+            }
+            legend.style.display = 'none';
+            const date = new Date(param.time * 1000);
+            const dateStr = currentRange === '1D' ? date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : date.toLocaleDateString('en-US');
+            const data = param.seriesData.get(areaSeries);
+            const price = data.value !== undefined ? data.value : data.close;
+            const previousData = areaSeries.data().find(data => data.time < param.time);
+            const change = previousData ? calculateChange(price, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
+            toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+                                    <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
+                                    <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                    <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
+
+            let left = param.point.x; // relative to timeScale
+            const timeScaleWidth = chart.timeScale().width();
+            const priceScaleWidth = chart.priceScale('left').width();
+            const halfTooltipWidth = toolTipWidth / 2;
+            left += priceScaleWidth - halfTooltipWidth;
+            left = Math.min(left, priceScaleWidth + timeScaleWidth - toolTipWidth);
+            left = Math.max(left, priceScaleWidth);
+
+            toolTip.style.left = left + 'px';
+            toolTip.style.top = 0 + 'px';
+
+            magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
+            magnifierOverlay.style.top = 0;
+            magnifierOverlay.style.width = `${toolTipWidth}px`;
+            magnifierOverlay.style.height = `${chartElement.clientHeight}px`;
+        });
+
         async function setChartRange(range) {
             currentRange = range;
             const stockData = await fetchStockData(range);
@@ -223,12 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                 });
             }
-            const lastData = stockData[stockData.length - 1];
-            const firstData = stockData[0];
-            if (lastData && firstData) {
-                const change = calculateChange(lastData.value, firstData.value);
-                setLegendText(symbolName, formatDate(lastData.time, range), formatPrice(lastData.value), change, range);
-            }
+            resetLegend(stockData, range);
             chart.timeScale().fitContent();
         }
 
@@ -292,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create the magnifier overlay with subtle shadow/glow
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 999; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 998; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
         container.appendChild(magnifierOverlay);
 
         // Create a gradient box for better readability
@@ -317,15 +357,13 @@ document.addEventListener('DOMContentLoaded', function() {
             ) {
                 toolTip.style.display = 'none';
                 magnifierOverlay.style.display = 'none';
-                const lastData = areaSeries.data().slice(-1)[0];
-                if (lastData) {
-                    const firstData = areaSeries.data()[0];
-                    const change = calculateChange(lastData.value, firstData.value);
-                    setLegendText(symbolName, formatDate(lastData.time, currentRange), formatPrice(lastData.value), change, currentRange);
-                }
+                const stockData = areaSeries.data();
+                resetLegend(stockData, currentRange);
                 return;
             }
             legend.style.display = 'none';
+            toolTip.style.display = 'block';
+            magnifierOverlay.style.display = 'block';
             const date = new Date(param.time * 1000);
             const dateStr = currentRange === '1D' ? date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : date.toLocaleDateString('en-US');
             const data = param.seriesData.get(areaSeries);
