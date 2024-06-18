@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     visible: true,
                     style: 0,
                     width: 2,
-                    color: 'rgba(32, 38, 46, 0.1)',
+                    color: '#06cbf8', // Set crosshair color to #06cbf8
                     labelVisible: false,
                 },
                 horzLine: {
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
         function setLegendText(name, date, price, change, range) {
             legend.innerHTML = `<div style="font-size: 20px; font-weight: bold; font-family: 'Open Sans', sans-serif;">${name}</div>
                                 <div style="font-size: 32px; font-weight: bold; font-family: 'Open Sans', sans-serif;">$${price}</div>
-                                <div style="font-size: 16px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
                                 <div style="font-size: 16px; font-family: 'Open Sans', sans-serif;">${date}</div>`;
         }
 
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const dateStr = formatDate(param.time, currentRange);
                 toolTip.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
                                      <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.value.toFixed(2)}</div>
-                                     <div style="font-size: 16px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                     <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
                                      <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
             }
         });
@@ -300,9 +300,9 @@ document.addEventListener('DOMContentLoaded', function() {
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
         container.appendChild(toolTip);
 
-        // Create the magnifier overlay
+        // Create the magnifier overlay with subtle shadow/glow
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 1001;`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 1001; box-shadow: 0 0 5px rgba(6, 203, 248, 0.5);`;
         container.appendChild(magnifierOverlay);
 
         // update tooltip
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const change = previousData ? calculateChange(price, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
                 toolTip.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
                                      <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
-                                     <div style="font-size: 16px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                     <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
                                      <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
 
                 let left = param.point.x; // relative to timeScale
