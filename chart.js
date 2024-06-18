@@ -294,15 +294,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add the tooltip
         const container = document.getElementById('chart-container');
 
-        const toolTipWidth = 120; // Make tooltip narrower
+        const toolTipWidth = 150; // Make tooltip wider
 
         // Create and style the tooltip html element
         const toolTip = document.createElement('div');
-        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border-radius: 4px 4px 0px 0px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border-radius: 4px 4px 0px 0px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
         toolTip.style.background = `transparent`; // Ensure the tooltip background is transparent
         toolTip.style.color = 'white'; // Change tooltip text color to white
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
         container.appendChild(toolTip);
+
+        // Create a gradient box for better readability
+        const gradientBox = document.createElement('div');
+        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none;`;
+        toolTip.appendChild(gradientBox);
 
         // Create the magnifier overlay with subtle shadow/glow
         const magnifierOverlay = document.createElement('div');
@@ -331,10 +336,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const price = data.value !== undefined ? data.value : data.close;
                 const previousData = areaSeries.data().find(data => data.time < param.time);
                 const change = previousData ? calculateChange(price, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
-                toolTip.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
-                                     <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
-                                     <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
-                                     <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
+                toolTip.innerHTML = `<div style="position: relative;">
+                                        <div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+                                        <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
+                                        <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
+                                        <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>
+                                        ${gradientBox.outerHTML}
+                                    </div>`;
 
                 let left = param.point.x; // relative to timeScale
                 const timeScaleWidth = chart.timeScale().width();
