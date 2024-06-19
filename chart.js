@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     visible: true,
                     style: 0,
                     width: 2,
-                    color: 'rgba(6, 203, 248, 0.5)', // 50% transparent crosshair color
+                    color: 'rgba(70, 70, 70, 0.5)', // Darkish grey crosshair color
                     labelVisible: false,
                 },
                 horzLine: {
