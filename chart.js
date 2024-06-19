@@ -400,6 +400,13 @@ document.addEventListener('DOMContentLoaded', function() {
         chartElement.addEventListener('touchstart', () => {
             toolTip.style.display = 'block';
             magnifierOverlay.style.display = 'block';
+            chart.applyOptions({
+                crosshair: {
+                    vertLine: {
+                        visible: true
+                    }
+                }
+            });
         });
 
         chartElement.addEventListener('touchend', () => {
@@ -412,6 +419,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             });
+            const stockData = areaSeries.data();
+            resetLegend(stockData, currentRange);
+            legend.style.display = 'block';
+        });
+
+        // Handle mouse events to reset tooltip on mouse leave
+        chartElement.addEventListener('mouseleave', () => {
+            toolTip.style.display = 'none';
+            magnifierOverlay.style.display = 'none';
             const stockData = areaSeries.data();
             resetLegend(stockData, currentRange);
             legend.style.display = 'block';
