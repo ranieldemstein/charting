@@ -183,9 +183,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function setLegendText(name, date, price, change, range) {
             animateTextUpdate(legend.querySelector('.stock-name'), name);
+            animateTextUpdate(legend.querySelector('.stock-date'), date);
             animateTextUpdate(legend.querySelector('.stock-price'), `$${price}`);
             animateTextUpdate(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`, 1);
-            animateTextUpdate(legend.querySelector('.stock-date'), date);
         }
 
         function updateLegendOnHover(param, seriesData, currentRange) {
