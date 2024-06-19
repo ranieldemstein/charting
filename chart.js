@@ -181,23 +181,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }});
         }
 
-        function animateTextUpdateWithTicker(element, newValue) {
-            const oldValue = element.textContent;
-            if (oldValue !== newValue) {
-                element.style.transition = 'transform 0.5s ease-in-out';
-                element.style.transform = 'translateY(-100%)';
-                
-                setTimeout(() => {
-                    element.textContent = newValue;
-                    element.style.transform = 'translateY(100%)';
-                    
-                    requestAnimationFrame(() => {
-                        element.style.transform = 'translateY(0)';
-                    });
-                }, 500); // Match the CSS transition duration
-            }
-        }
-
         function setLegendText(name, range, price, change, isPositive) {
             const stockInfo = `${name} | ${range}`;
             animateTextUpdate(legend.querySelector('.stock-info'), stockInfo);
@@ -216,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
                 const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
                 toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
-                animateTextUpdateWithTicker(toolTipText.querySelector('.ticker'), `$${price.toFixed(2)}`);
+                toolTipText.querySelector('.stock-price').textContent = `$${price.value.toFixed(2)}`;
                 toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
                 toolTipText.querySelector('.stock-change').style.color = changeColor;
             }
@@ -264,9 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toolTipText.style = `position: relative; z-index: 1; color: white;`;
         toolTipText.innerHTML = `
             <div class="stock-info"></div>
-            <div class="ticker-container stock-price">
-                <span class="ticker"></span>
-            </div>
+            <div class="stock-price"></div>
             <div class="stock-change"></div>
         `;
         toolTip.appendChild(toolTipText);
@@ -300,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
             const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
             toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
-            animateTextUpdateWithTicker(toolTipText.querySelector('.ticker'), `$${price.toFixed(2)}`);
+            toolTipText.querySelector('.stock-price').textContent = `$${price.toFixed(2)}`;
             toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
             toolTipText.querySelector('.stock-change').style.color = changeColor;
 
