@@ -278,6 +278,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
                                     <div style="font-size: 14px; font-weight: bold; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>`;
 
+            // Animate the price update with GSAP
+            gsap.fromTo(toolTipText.querySelector('div:nth-child(2)'), 
+                        { x: -20, opacity: 0 }, 
+                        { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" });
+
             let left = param.point.x; // relative to timeScale
             const timeScaleWidth = chart.timeScale().width();
             const priceScaleWidth = chart.priceScale('left').width();
