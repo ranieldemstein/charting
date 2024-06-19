@@ -174,19 +174,12 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }
 
-        function animateTextUpdate(element, newValue, duration = 0.5) {
-            gsap.to(element, { opacity: 0, duration: duration / 2, onComplete: () => {
-                element.textContent = newValue;
-                gsap.to(element, { opacity: 1, duration: duration / 2 });
-            }});
-        }
-
         function setLegendText(name, range, price, change, isPositive) {
             const stockInfo = `${name} | ${range}`;
-            animateTextUpdate(legend.querySelector('.stock-info'), stockInfo);
-            animateTextUpdate(legend.querySelector('.stock-price'), `$${price}`);
+            legend.querySelector('.stock-info').textContent = stockInfo;
+            legend.querySelector('.stock-price').textContent = `$${price}`;
             const changeColor = isPositive ? '#06cbf8' : 'red';
-            animateTextUpdate(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
+            legend.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
             legend.querySelector('.stock-change').style.color = changeColor;
         }
 
