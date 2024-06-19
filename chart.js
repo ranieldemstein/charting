@@ -200,9 +200,9 @@ document.addEventListener('DOMContentLoaded', function() {
         function setLegendText(name, range, price, change, isPositive) {
             const stockInfo = `${name} | ${range}`;
             animateTextUpdate(legend.querySelector('.stock-info'), stockInfo);
-            animateTextUpdateWithTicker(legend.querySelector('.stock-price .ticker'), `$${price}`);
+            animateTextUpdate(legend.querySelector('.stock-price'), `$${price}`);
             const changeColor = isPositive ? '#06cbf8' : 'red';
-            animateTextUpdateWithTicker(legend.querySelector('.stock-change .ticker'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
+            animateTextUpdate(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
             legend.querySelector('.stock-change').style.color = changeColor;
         }
 
