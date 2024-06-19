@@ -409,6 +409,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+        chartElement.addEventListener('touchmove', (event) => {
+            event.preventDefault(); // Prevent scrolling
+        });
+
         chartElement.addEventListener('touchend', () => {
             toolTip.style.display = 'none';
             magnifierOverlay.style.display = 'none';
