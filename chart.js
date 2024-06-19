@@ -174,11 +174,18 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }
 
+        function animateTextUpdate(element, newValue, duration = 0.5) {
+            gsap.to(element, { opacity: 0, duration: duration / 2, onComplete: () => {
+                element.textContent = newValue;
+                gsap.to(element, { opacity: 1, duration: duration / 2 });
+            }});
+        }
+
         function setLegendText(name, date, price, change, range) {
-            legend.innerHTML = `<div style="font-size: 20px; font-weight: bold; font-family: 'Open Sans', sans-serif;">${name}</div>
-                                <div style="font-size: 32px; font-weight: bold; font-family: 'Open Sans', sans-serif;">$${price}</div>
-                                <div style="font-size: 14px; color: ${change.priceChange >= 0 ? 'green' : 'red'}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
-                                <div style="font-size: 16px; font-family: 'Open Sans', sans-serif;">${date}</div>`;
+            animateTextUpdate(legend.querySelector('.stock-name'), name);
+            animateTextUpdate(legend.querySelector('.stock-price'), `$${price}`);
+            animateTextUpdate(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`, 1);
+            animateTextUpdate(legend.querySelector('.stock-date'), date);
         }
 
         function updateLegendOnHover(param, seriesData, currentRange) {
@@ -208,19 +215,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('chart-container');
         const toolTipWidth = 150;
         const toolTip = document.createElement('div');
-        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border-radius: 4px 4px 0px 0px; border-bottom: none; font-family: 'Open
-        Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 12px; left: 12px; pointer-events: none; border-radius: 4px 4px 0px 0px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
         toolTip.style.background = `transparent`;
         toolTip.style.color = 'white';
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
         container.appendChild(toolTip);
 
-        // Create the magnifier overlay with subtle shadow/glow
+        // Create the magnifier overlay with glow on the sides and white color
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(0, 0, 0, 0.1); pointer-events: none; z-index: 998;`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); pointer-events: none; z-index: 998;`;
         container.appendChild(magnifierOverlay);
 
-        // Create a gradient box for better readability
+        // Create a gradient box for better readability without bottom glow
         const gradientBox = document.createElement('div');
         gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1;`;
         toolTip.appendChild(gradientBox);
