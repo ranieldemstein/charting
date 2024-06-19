@@ -6,6 +6,7 @@
     <title>Stock Chart</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
         html, body {
             height: 100%;
             width: 100%;
@@ -13,6 +14,7 @@
             padding: 0;
             background: transparent;
             overflow: hidden;
+            font-family: 'Open Sans', sans-serif;
         }
 
         #chart-container {
@@ -35,9 +37,28 @@
             top: 10px;
             left: 10px;
             z-index: 1;
-            font-size: 14px;
             font-family: 'Open Sans', sans-serif;
             color: white;
+        }
+
+        .stock-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .stock-date {
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .stock-price {
+            font-size: 24px;
+            margin: 4px 0px;
+        }
+
+        .stock-change {
+            font-size: 14px;
+            font-weight: bold;
         }
 
         #controls-container {
@@ -118,9 +139,9 @@
         <div id="chart"></div>
         <div id="legend">
             <div class="stock-name"></div>
+            <div class="stock-date"></div>
             <div class="stock-price"></div>
             <div class="stock-change"></div>
-            <div class="stock-date"></div>
         </div>
     </div>
     <div id="controls-container">
