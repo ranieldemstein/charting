@@ -299,6 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
             const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
             toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
+            console.log('Updating price in tooltip:', price);
             animateTextUpdateWithTicker(toolTipText.querySelector('.ticker'), `$${price.toFixed(2)}`);
             toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
             toolTipText.querySelector('.stock-change').style.color = changeColor;
