@@ -181,12 +181,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }});
         }
 
+        function animateTextUpdateWithTicker(element, newValue) {
+            const oldValue = element.textContent;
+            if (oldValue !== newValue) {
+                element.style.transform = 'translateY(-100%)';
+                
+                setTimeout(() => {
+                    element.textContent = newValue;
+                    element.style.transform = 'translateY(100%)';
+                    
+                    requestAnimationFrame(() => {
+                        element.style.transform = 'translateY(0)';
+                    });
+                }, 500); // Match the CSS transition duration
+            }
+        }
+
         function setLegendText(name, range, price, change, isPositive) {
             const stockInfo = `${name} | ${range}`;
             animateTextUpdate(legend.querySelector('.stock-info'), stockInfo);
-            animateTextUpdateWithTicker(legend.querySelector('.stock-price'), `$${price}`);
+            animateTextUpdateWithTicker(legend.querySelector('.stock-price .ticker'), `$${price}`);
             const changeColor = isPositive ? '#06cbf8' : 'red';
-            animateTextUpdateWithTicker(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
+            animateTextUpdateWithTicker(legend.querySelector('.stock-change .ticker'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
             legend.querySelector('.stock-change').style.color = changeColor;
         }
 
@@ -426,20 +442,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentRange = '1D';
     createStockChart();
-
-    function animateTextUpdateWithTicker(element, newValue) {
-        const oldValue = element.textContent;
-        if (oldValue !== newValue) {
-            element.style.transform = 'translateY(-100%)';
-            
-            setTimeout(() => {
-                element.textContent = newValue;
-                element.style.transform = 'translateY(100%)';
-                
-                requestAnimationFrame(() => {
-                    element.style.transform = 'translateY(0)';
-                });
-            }, 500); // Match the CSS transition duration
-        }
-    }
 });
