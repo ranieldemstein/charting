@@ -184,9 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
         function setLegendText(name, range, price, change, isPositive) {
             const stockInfo = `${name} | ${range}`;
             animateTextUpdate(legend.querySelector('.stock-info'), stockInfo);
-            animateTextUpdate(legend.querySelector('.stock-price'), `$${price}`);
+            animateTextUpdateWithTicker(legend.querySelector('.stock-price'), `$${price}`);
             const changeColor = isPositive ? '#06cbf8' : 'red';
-            animateTextUpdate(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
+            animateTextUpdateWithTicker(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
             legend.querySelector('.stock-change').style.color = changeColor;
         }
 
@@ -199,8 +199,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
                 const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
                 toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">${stockInfo}</div>
-                                     <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.value.toFixed(2)}</div>
-                                     <div style="font-size: 14px; font-weight: bold; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>`;
+                                     <div class="ticker-container" style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">
+                                         <span class="ticker">$${price.value.toFixed(2)}</span>
+                                     </div>
+                                     <div class="ticker-container" style="font-size: 14px; font-weight: bold; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">
+                                         <span class="ticker">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</span>
+                                     </div>`;
             }
         }
 
@@ -275,11 +279,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
             const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
             toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">${stockInfo}</div>
-                                    <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
-                                    <div style="font-size: 14px; font-weight: bold; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>`;
+                                    <div class="ticker-container" style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">
+                                        <span class="ticker">$${price.toFixed(2)}</span>
+                                    </div>
+                                    <div class="ticker-container" style="font-size: 14px; font-weight: bold; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">
+                                        <span class="ticker">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</span>
+                                    </div>`;
 
             // Animate the price update with GSAP
-            gsap.fromTo(toolTipText.querySelector('div:nth-child(2)'), 
+            gsap.fromTo(toolTipText.querySelector('.ticker-container'), 
                         { x: -20, opacity: 0 }, 
                         { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" });
 
@@ -418,4 +426,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentRange = '1D';
     createStockChart();
+
+    function animateTextUpdateWithTicker(element, newValue) {
+        const oldValue = element.textContent;
+        if (oldValue !== newValue) {
+            element.style.transform = 'translateY(-100%)';
+            
+            setTimeout(() => {
+                element.textContent = newValue;
+                element.style.transform = 'translateY(100%)';
+                
+                requestAnimationFrame(() => {
+                    element.style.transform = 'translateY(0)';
+                });
+            }, 500); // Match the CSS transition duration
+        }
+    }
 });
