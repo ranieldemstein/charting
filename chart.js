@@ -214,13 +214,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const dateStr = formatDate(param.time, currentRange);
                 const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
                 const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
-                toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">${stockInfo}</div>
-                                     <div class="ticker-container" style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">
-                                         <span class="ticker">$${price.value.toFixed(2)}</span>
-                                     </div>
-                                     <div class="ticker-container" style="font-size: 14px; font-weight: bold; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">
-                                         <span class="ticker">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</span>
-                                     </div>`;
+                toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
+                animateTextUpdateWithTicker(toolTipText.querySelector('.stock-price'), `$${price.value.toFixed(2)}`);
+                toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
+                toolTipText.querySelector('.stock-change').style.color = changeColor;
             }
         }
 
@@ -263,7 +260,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create a container for the tooltip text
         const toolTipText = document.createElement('div');
-        toolTipText.style = `position: relative; z-index: 1;`;
+        toolTipText.style = `position: relative; z-index: 1; color: white;`;
+        toolTipText.innerHTML = `
+            <div class="stock-info"></div>
+            <div class="ticker-container stock-price">
+                <span class="ticker"></span>
+            </div>
+            <div class="stock-change"></div>
+        `;
         toolTip.appendChild(toolTipText);
 
         // Update tooltip
@@ -294,18 +298,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const change = previousData ? calculateChange(price, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
             const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
-            toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">${stockInfo}</div>
-                                    <div class="ticker-container" style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">
-                                        <span class="ticker">$${price.toFixed(2)}</span>
-                                    </div>
-                                    <div class="ticker-container" style="font-size: 14px; font-weight: bold; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">
-                                        <span class="ticker">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</span>
-                                    </div>`;
-
-            // Animate the price update with GSAP
-            gsap.fromTo(toolTipText.querySelector('.ticker-container'), 
-                        { x: -20, opacity: 0 }, 
-                        { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" });
+            toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
+            animateTextUpdateWithTicker(toolTipText.querySelector('.ticker'), `$${price.toFixed(2)}`);
+            toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
+            toolTipText.querySelector('.stock-change').style.color = changeColor;
 
             let left = param.point.x; // relative to timeScale
             const timeScaleWidth = chart.timeScale().width();
