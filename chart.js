@@ -222,6 +222,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        function hideMagnifierAndTooltip() {
+            toolTip.style.display = 'none';
+            magnifierOverlay.style.display = 'none';
+            const stockData = areaSeries.data();
+            resetLegend(stockData, currentRange);
+            legend.style.display = 'block';
+        }
+
         // Create and style the tooltip html element
         const container = document.getElementById('chart-container');
         const toolTipWidth = 150;
@@ -262,11 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 param.point.y < 0 ||
                 param.point.y > container.clientHeight
             ) {
-                toolTip.style.display = 'none';
-                magnifierOverlay.style.display = 'none';
-                const stockData = areaSeries.data();
-                resetLegend(stockData, currentRange);
-                legend.style.display = 'block';
+                hideMagnifierAndTooltip();
                 return;
             }
             legend.style.display = 'none';
@@ -409,29 +413,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        chartElement.addEventListener('touchend', (event) => {
-            toolTip.style.display = 'none';
-            magnifierOverlay.style.display = 'none';
-            chart.applyOptions({
-                crosshair: {
-                    vertLine: {
-                        visible: false
-                    }
-                }
-            });
-            const stockData = areaSeries.data();
-            resetLegend(stockData, currentRange);
-            legend.style.display = 'block';
-        });
+        chartElement.addEventListener('touchend', hideMagnifierAndTooltip);
 
         // Handle mouse events to reset tooltip on mouse leave
-        chartElement.addEventListener('mouseleave', () => {
-            toolTip.style.display = 'none';
-            magnifierOverlay.style.display = 'none';
-            const stockData = areaSeries.data();
-            resetLegend(stockData, currentRange);
-            legend.style.display = 'block';
-        });
+        chartElement.addEventListener('mouseleave', hideMagnifierAndTooltip);
     }
 
     let currentRange = '1D';
