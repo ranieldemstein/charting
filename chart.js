@@ -182,8 +182,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function setLegendText(name, range, price, change, isPositive) {
-            animateTextUpdate(legend.querySelector('.stock-name'), name);
-            animateTextUpdate(legend.querySelector('.stock-range'), range);
+            const stockInfo = `${name} | ${range}`;
+            animateTextUpdate(legend.querySelector('.stock-info'), stockInfo);
             animateTextUpdate(legend.querySelector('.stock-price'), `$${price}`);
             const changeColor = isPositive ? '#06cbf8' : 'red';
             animateTextUpdate(legend.querySelector('.stock-change'), `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`);
@@ -197,10 +197,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const change = previousData ? calculateChange(price.value, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
                 const dateStr = formatDate(param.time, currentRange);
                 const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
-                toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+                const stockInfo = `${symbolName} | ${dateStr}`;
+                toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">${stockInfo}</div>
                                      <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.value.toFixed(2)}</div>
-                                     <div style="font-size: 14px; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
-                                     <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
+                                     <div style="font-size: 14px; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>`;
             }
         }
 
@@ -273,10 +273,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const previousData = areaSeries.data().find(data => data.time < param.time);
             const change = previousData ? calculateChange(price, previousData.value) : { priceChange: '0.00', percentChange: '0.00' };
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
-            toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">⬤ ${symbolName}</div>
+            const stockInfo = `${symbolName} | ${dateStr}`;
+            toolTipText.innerHTML = `<div style="color: white; font-family: 'Open Sans', sans-serif;">${stockInfo}</div>
                                     <div style="font-size: 24px; margin: 4px 0px; color: white; font-family: 'Open Sans', sans-serif;">$${price.toFixed(2)}</div>
-                                    <div style="font-size: 14px; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>
-                                    <div style="font-size: 16px; color: white; font-family: 'Open Sans', sans-serif;">${dateStr}</div>`;
+                                    <div style="font-size: 14px; color: ${changeColor}; font-family: 'Open Sans', sans-serif;">${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)</div>`;
 
             let left = param.point.x; // relative to timeScale
             const timeScaleWidth = chart.timeScale().width();
