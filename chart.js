@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const chart = LightweightCharts.createChart(chartElement, {
             width: chartElement.clientWidth,
-            height: chartElement.clientHeight + 20, // Increased height for better visibility of the tooltip
+            height: chartElement.clientHeight, // Adjust height to fit the chart
             layout: {
                 textColor: 'white',
                 background: { type: 'solid', color: 'transparent' },
@@ -238,11 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
         magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 95%; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 2.5%;`;
         container.appendChild(magnifierOverlay);
 
-        // Create a gradient box for better readability without bottom glow
-        const gradientBox = document.createElement('div');
-        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1; border-radius: 10px;`;
-        toolTip.appendChild(gradientBox);
-
         // Create a container for the tooltip text
         const toolTipText = document.createElement('div');
         toolTipText.style = `position: relative; z-index: 1; color: white; top: 0;`;
@@ -357,16 +352,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         ranges.forEach(range => {
             const button = document.createElement('button');
+            button.className = 'range-button';
             button.innerText = range;
-            button.classList.add('range-button');
-            if (range === '1D') {
-                button.classList.add('selected');
-            }
+            button.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: 1px solid lightgrey; background-color: transparent; border-radius: 5px; cursor: pointer; color: white;';
             button.addEventListener('click', () => {
+                setChartRange(range);
                 document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('selected'));
                 button.classList.add('selected');
-                setChartRange(range);
             });
+            button.addEventListener('mouseover', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
+            button.addEventListener('mouseout', () => {
+                if (!button.classList.contains('selected')) {
+                    button.style.backgroundColor = 'transparent';
+                }
+            });
+            button.addEventListener('mousedown', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
+            button.addEventListener('mouseup', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
             buttonsContainer.appendChild(button);
         });
 
@@ -374,9 +375,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const priceButton = document.getElementById('toggle-price');
         const percentageButton = document.getElementById('toggle-percentage');
 
-        priceButton.classList.add('toggle-button');
-        percentageButton.classList.add('toggle-button');
-        priceButton.classList.add('selected');
+        priceButton.className = 'toggle-button selected';
+        percentageButton.className = 'toggle-button';
 
         priceButton.addEventListener('click', () => {
             chart.priceScale('right').applyOptions({
@@ -390,8 +390,8 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Percentage,
             });
-            percentageButton.classList.add('selected');
             priceButton.classList.remove('selected');
+            percentageButton.classList.add('selected');
         });
 
         // Handle touch events for mobile
