@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const chart = LightweightCharts.createChart(chartElement, {
             width: chartElement.clientWidth,
-            height: chartElement.clientHeight + 20, // Increased height for better visibility of the tooltip
+            height: chartElement.clientHeight + 40, // Increased height for better visibility of the tooltip and padding
             layout: {
                 textColor: 'white',
                 background: { type: 'solid', color: 'transparent' },
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create a gradient box for better readability without bottom glow
         const gradientBox = document.createElement('div');
-        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1; border-radius: 10px;`;
+        gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1; border-radius: 10px;`;
         magnifierOverlay.appendChild(gradientBox);
 
         // Create a container for the tooltip text
