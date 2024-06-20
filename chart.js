@@ -93,26 +93,29 @@ document.addEventListener('DOMContentLoaded', function() {
             width: chartElement.clientWidth,
             height: chartElement.clientHeight + 40, // Increased height for better visibility of the tooltip and padding
             layout: {
-                textColor: 'white',
-                background: { type: 'solid', color: 'transparent' },
+                textColor: 'black',
+                background: { type: 'solid', color: 'white' },
             },
             rightPriceScale: {
-                scaleMargins: {
-                    top: 0.4,
-                    bottom: 0.15,
-                },
+                visible: false,
+            },
+            leftPriceScale: {
+                visible: true,
+                borderVisible: false,
+            },
+            timeScale: {
+                borderVisible: false,
             },
             crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal, // Enable crosshair without tooltip
+                horzLine: {
+                    visible: false,
+                    labelVisible: false,
+                },
                 vertLine: {
                     visible: true,
                     style: 0,
                     width: 2,
-                    color: 'rgba(70, 70, 70, 0.5)', // Darkish grey crosshair color
-                    labelVisible: false,
-                },
-                horzLine: {
-                    visible: false, // Hide the horizontal crosshair line
+                    color: 'rgba(32, 38, 46, 0.1)',
                     labelVisible: false,
                 },
             },
@@ -124,27 +127,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     visible: false,
                 },
             },
-            handleScroll: {
-                mouseWheel: false,
-                pressedMouseMove: false,
-                horzTouchDrag: false,
-                vertTouchDrag: false,
-            },
-            handleScale: {
-                axisPressedMouseMove: false,
-                mouseWheel: false,
-                pinch: false,
-            },
         });
 
         console.log('Chart created:', chart);
 
         const areaSeries = chart.addAreaSeries({
-            topColor: '#06cbf8',
-            bottomColor: 'rgba(6, 203, 248, 0.28)',
-            lineColor: '#06cbf8',
+            topColor: 'rgba(239, 83, 80, 0.05)',
+            bottomColor: 'rgba(239, 83, 80, 0.28)',
+            lineColor: 'rgba(239, 83, 80, 1)',
             lineWidth: 2,
-            crossHairMarkerVisible: true, // Ensure crosshair marker is visible
+            crossHairMarkerVisible: false,
+            priceLineVisible: false,
+            lastValueVisible: false,
+        });
+
+        areaSeries.priceScale().applyOptions({
+            scaleMargins: {
+                top: 0.3, // leave some space for the legend
+                bottom: 0.25,
+            },
         });
 
         console.log('Area series added:', areaSeries);
@@ -225,12 +226,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create and style the tooltip html element
         const container = document.getElementById('chart-container');
-        const toolTipWidth = 160; // Increased width
+        const toolTipWidth = 96; // Width based on the example
+        const toolTipHeight = 300; // Height based on the example
         const toolTip = document.createElement('div');
-        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 0; left: 12px; pointer-events: none; border-radius: 10px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
-        toolTip.style.background = `rgba(0, 0, 0, 0.7)`; // Darker background for better visibility
-        toolTip.style.color = 'white';
-        toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
+        toolTip.style = `width: ${toolTipWidth}px; height: ${toolTipHeight}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: left; z-index: 1000; top: 0; left: 12px; pointer-events: none; border-radius: 4px 4px 0px 0px; border-bottom: none; box-shadow: 0 2px 5px 0 rgba(117, 134, 150, 0.45); font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+        toolTip.style.background = `rgba(255, 255, 255, 0.25)`; // Light background for better visibility
+        toolTip.style.color = 'black';
+        toolTip.style.borderColor = 'rgba(239, 83, 80, 1)';
         container.appendChild(toolTip);
 
         // Create the magnifier overlay with glow on the sides and white color
@@ -245,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create a container for the tooltip text
         const toolTipText = document.createElement('div');
-        toolTipText.style = `position: relative; z-index: 1; color: white; top: 0;`;
+        toolTipText.style = `position: relative; z-index: 1; color: black; top: 0;`;
         toolTipText.innerHTML = `
             <div class="stock-info"></div>
             <div class="stock-price"></div>
