@@ -235,13 +235,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create the magnifier overlay with glow on the sides and white color
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 95%; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 2.5%;`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 100%; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 0;`;
         container.appendChild(magnifierOverlay);
 
         // Create a gradient box for better readability without bottom glow
         const gradientBox = document.createElement('div');
         gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1; border-radius: 10px;`;
-        magnifierOverlay.appendChild(gradientBox);
+        toolTip.appendChild(gradientBox);
 
         // Create a container for the tooltip text
         const toolTipText = document.createElement('div');
@@ -294,9 +294,9 @@ document.addEventListener('DOMContentLoaded', function() {
             toolTip.style.top = '0';
 
             magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
-            magnifierOverlay.style.top = '2.5%';
+            magnifierOverlay.style.top = '0';
             magnifierOverlay.style.width = `${toolTipWidth}px`;
-            magnifierOverlay.style.height = '95%';
+            magnifierOverlay.style.height = '100%';
         });
 
         async function setChartRange(range) {
