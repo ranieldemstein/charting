@@ -358,12 +358,15 @@ document.addEventListener('DOMContentLoaded', function() {
         ranges.forEach(range => {
             const button = document.createElement('button');
             button.innerText = range;
-            button.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: #333; border-radius: 5px; cursor: pointer; color: black;';
-            button.addEventListener('click', () => setChartRange(range));
-            button.addEventListener('mouseover', () => button.style.backgroundColor = '#555');
-            button.addEventListener('mouseout', () => button.style.backgroundColor = '#333');
-            button.addEventListener('mousedown', () => button.style.backgroundColor = '#777');
-            button.addEventListener('mouseup', () => button.style.backgroundColor = '#555');
+            button.classList.add('range-button');
+            if (range === '1D') {
+                button.classList.add('selected');
+            }
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                setChartRange(range);
+            });
             buttonsContainer.appendChild(button);
         });
 
@@ -371,27 +374,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const priceButton = document.getElementById('toggle-price');
         const percentageButton = document.getElementById('toggle-percentage');
 
-        priceButton.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: #333; border-radius: 5px; cursor: pointer; color: black;';
+        priceButton.classList.add('toggle-button');
+        percentageButton.classList.add('toggle-button');
+        priceButton.classList.add('selected');
+
         priceButton.addEventListener('click', () => {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Normal,
             });
+            priceButton.classList.add('selected');
+            percentageButton.classList.remove('selected');
         });
-        priceButton.addEventListener('mouseover', () => priceButton.style.backgroundColor = '#555');
-        priceButton.addEventListener('mouseout', () => priceButton.style.backgroundColor = '#333');
-        priceButton.addEventListener('mousedown', () => priceButton.style.backgroundColor = '#777');
-        priceButton.addEventListener('mouseup', () => priceButton.style.backgroundColor = '#555');
 
-        percentageButton.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: none; background-color: #333; border-radius: 5px; cursor: pointer; color: black;';
         percentageButton.addEventListener('click', () => {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Percentage,
             });
+            percentageButton.classList.add('selected');
+            priceButton.classList.remove('selected');
         });
-        percentageButton.addEventListener('mouseover', () => percentageButton.style.backgroundColor = '#555');
-        percentageButton.addEventListener('mouseout', () => percentageButton.style.backgroundColor = '#333');
-        percentageButton.addEventListener('mousedown', () => percentageButton.style.backgroundColor = '#777');
-        percentageButton.addEventListener('mouseup', () => percentageButton.style.backgroundColor = '#555');
 
         // Handle touch events for mobile
         chartElement.addEventListener('touchstart', () => {
