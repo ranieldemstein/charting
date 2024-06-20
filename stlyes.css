@@ -5,10 +5,11 @@ html, body {
     padding: 0;
     background: transparent;
     overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
 }
 
 #chart-container {
-    height: calc(100% - 50px); /* Adjusted to leave space for buttons */
+    height: calc(100% - 60px); /* Adjusted to leave space for buttons */
     width: 100%;
     position: relative;
     top: 0;
@@ -27,9 +28,22 @@ html, body {
     top: 10px;
     left: 10px;
     z-index: 1;
-    font-size: 14px;
     font-family: 'Open Sans', sans-serif;
     color: white;
+}
+
+.stock-info {
+    font-size: 14px;
+}
+
+.stock-price {
+    font-size: 24px;
+    margin: 4px 0px;
+}
+
+.stock-change {
+    font-size: 14px;
+    font-weight: bold;
 }
 
 #controls-container {
@@ -41,6 +55,7 @@ html, body {
     padding: 10px 20px;
     box-sizing: border-box;
     background: transparent; /* Make background transparent */
+    margin-top: 10px; /* Moved the buttons down */
 }
 
 #buttons-container {
@@ -62,19 +77,27 @@ button {
     font-family: 'Open Sans', sans-serif;
     font-size: 12px;
     padding: 6px 12px;
-    border: none;
-    background-color: rgba(6, 203, 248, 0.5);
     border-radius: 5px;
     cursor: pointer;
-    color: black;
+    border: 1px solid lightgrey;
+    background-color: transparent;
+    color: white;
 }
 
 button:hover {
-    background-color: rgba(6, 203, 248, 0.7);
+    background-color: rgba(6, 203, 248, 0.5);
+    color: black;
 }
 
 button:active {
-    background-color: rgba(6, 203, 248, 0.9);
+    background-color: rgba(6, 203, 248, 0.7);
+    color: black;
+}
+
+.range-button.selected,
+.toggle-button.selected {
+    background-color: lightgrey;
+    color: black;
 }
 
 @media (max-width: 768px) {
@@ -102,4 +125,18 @@ button:active {
     button {
         padding: 6px 10px;
     }
+}
+
+/* Ticker animation styles */
+.ticker-container {
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    height: 1em;
+}
+
+.ticker {
+    display: inline-block;
+    position: absolute;
+    transition: transform 0.5s ease-in-out;
 }
