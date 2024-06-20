@@ -355,19 +355,34 @@ document.addEventListener('DOMContentLoaded', function() {
             button.className = 'range-button';
             button.innerText = range;
             button.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: 1px solid lightgrey; background-color: transparent; border-radius: 5px; cursor: pointer; color: white;';
+            if (range === '1D') {
+                button.classList.add('selected');
+            }
             button.addEventListener('click', () => {
                 setChartRange(range);
                 document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('selected'));
                 button.classList.add('selected');
             });
-            button.addEventListener('mouseover', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
+            button.addEventListener('mouseover', () => {
+                if (!button.classList.contains('selected')) {
+                    button.style.backgroundColor = 'darkgrey';
+                    button.style.color = 'white';
+                    button.style.border = '1px solid white';
+                }
+            });
             button.addEventListener('mouseout', () => {
                 if (!button.classList.contains('selected')) {
                     button.style.backgroundColor = 'transparent';
+                    button.style.color = 'white';
+                    button.style.border = '1px solid lightgrey';
                 }
             });
             button.addEventListener('mousedown', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
-            button.addEventListener('mouseup', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.5)');
+            button.addEventListener('mouseup', () => {
+                if (!button.classList.contains('selected')) {
+                    button.style.backgroundColor = 'darkgrey';
+                }
+            });
             buttonsContainer.appendChild(button);
         });
 
