@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create a gradient box for better readability without bottom glow
         const gradientBox = document.createElement('div');
         gradientBox.style = `width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); pointer-events: none; z-index: -1; border-radius: 10px;`;
-        toolTip.appendChild(gradientBox);
+        magnifierOverlay.appendChild(gradientBox);
 
         // Create a container for the tooltip text
         const toolTipText = document.createElement('div');
