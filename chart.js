@@ -354,7 +354,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const button = document.createElement('button');
             button.className = 'range-button';
             button.innerText = range;
-            button.style = 'font-family: Arial, sans-serif; font-size: 12px; padding: 6px 12px; margin: 5px; border: 1px solid lightgrey; background-color: transparent; border-radius: 5px; cursor: pointer; color: white;';
             if (range === '1D') {
                 button.classList.add('selected');
             }
