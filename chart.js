@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create the magnifier overlay with glow on the sides and white color
         function setMagnifierOverlayHeight() {
             const xAxisHeight = chartElement.clientHeight - chart.timeScale().height();
-            const magnifierHeight = xAxisHeight + 9; // Extend 3px beyond the x-axis text
+            const magnifierHeight = xAxisHeight + 12; // Extend 12px beyond the x-axis text
 
             magnifierOverlay.style.height = `${magnifierHeight}px`;
         }
