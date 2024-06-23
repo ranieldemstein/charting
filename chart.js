@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 timespan = 'hour';
                 break;
             case '1M':
-                fromDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                fromDate = new Date(now.getTime());
+                fromDate.setDate(now.getDate() - 30); // Start 30 days back to get one month of data
                 multiplier = 1;
                 timespan = 'hour';
                 break;
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     value: item.c,
                 }));
 
-                // Filter for the most recent market day
+                // Filter for the most recent market day for the 1D range
                 if (range === '1D') {
                     const latestDay = Math.max(...results.map(item => item.time * 1000));
                     const startOfDay = new Date(latestDay);
