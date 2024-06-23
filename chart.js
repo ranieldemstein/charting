@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case '1W':
                 fromDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                multiplier = 1;
-                timespan = 'day';
+                multiplier = 5;
+                timespan = 'minute';
                 break;
             case '1M':
                 fromDate = new Date(now.getTime());
                 fromDate.setMonth(now.getMonth() - 1);
-                multiplier = 1;
-                timespan = 'day';
+                multiplier = 5;
+                timespan = 'minute';
                 break;
             case '1Y':
                 fromDate = new Date(now.getTime());
