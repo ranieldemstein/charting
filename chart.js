@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('chart-container');
         const toolTipWidth = 160; // Increased width
         const toolTip = document.createElement('div');
-        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 0; left: 12px; pointer-events: none; border-radius: 10px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
+        toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 30px; left: 12px; pointer-events: none; border-radius: 10px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
         toolTip.style.background = `rgba(0, 0, 0, 0.7)`; // Darker background for better visibility
         toolTip.style.color = 'white';
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
             left = Math.max(left, priceScaleWidth);
 
             toolTip.style.left = left + 'px';
-            toolTip.style.top = '0';
+            toolTip.style.top = '30px';
 
             magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
             magnifierOverlay.style.top = '2.5%';
