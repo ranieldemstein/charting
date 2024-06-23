@@ -29,8 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 timespan = 'hour';
                 break;
             case '1M':
-                fromDate = new Date(now.getTime());
-                fromDate.setMonth(now.getMonth() - 1);
+                fromDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
                 multiplier = 1;
                 timespan = 'day';
                 break;
@@ -48,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fromDate = fromDate.toISOString().split('T')[0];
         const toDate = new Date().toISOString().split('T')[0];
+        console.log(`Fetching data from ${fromDate} to ${toDate}`);
 
         try {
             const response = await fetch(`https://api.polygon.io/v2/aggs/ticker/${stockTicker}/range/${multiplier}/${timespan}/${fromDate}/${toDate}?apiKey=${apiKey}`);
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     value: item.c,
                 }));
 
-                // Filter for the most recent market day
+                // Filter for the most recent market day for the 1D range
                 if (range === '1D') {
                     const latestDay = Math.max(...results.map(item => item.time * 1000));
                     const startOfDay = new Date(latestDay);
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
             const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
             toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
-            toolTipText.querySelector('.stock-price').textContent = `$${price.value.toFixed(2)}`;
+            toolTipText.querySelector('.stock-price').textContent = `$${price.toFixed(2)}`;
             toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
             toolTipText.querySelector('.stock-change').style.color = changeColor;
 
@@ -397,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mode: LightweightCharts.PriceScaleMode.Percentage,
             });
             // Remove the 'selected' class from all toggle buttons
-            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.toggle-button').forEach btn => btn.classList.remove('selected'));
             // Add the 'selected' class to the clicked button
             percentageButton.classList.add('selected');
         });
