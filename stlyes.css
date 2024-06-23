@@ -1,4 +1,4 @@
-html, body { 
+html, body {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -78,6 +78,7 @@ button.range-button, button.toggle-button {
     font-size: 12px;
     padding: 6px 12px;
     margin: 5px;
+    margin-bottom: 10px; /* Added margin-bottom */
     border: 1px solid lightgrey;
     background-color: transparent;
     border-radius: 5px;
@@ -125,5 +126,6 @@ button.range-button:active:not(.selected), button.toggle-button:active:not(.sele
     }
     button {
         padding: 6px 10px;
+        margin-bottom: 10px; /* Added margin-bottom */
     }
 }
