@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create the magnifier overlay with glow on the sides and white color
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: calc(100% + 5px); background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 5%;`; // Increased height by 5px and adjusted top position
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: calc(100% + 5px); background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 0%;`; // Increased height by 5px and adjusted top position
         container.appendChild(magnifierOverlay);
 
         // Create a container for the tooltip text
