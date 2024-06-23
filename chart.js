@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 multiplier = 5;
                 timespan = 'minute';
                 break;
-            case '1W':
+            case '1W':  // Adjusted 1-week range
                 fromDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
                 multiplier = 5;
                 timespan = 'minute';
                 break;
-            case '1M':
+            case '1M':  // Adjusted 1-month range
                 fromDate = new Date(now.getTime());
                 fromDate.setMonth(now.getMonth() - 1);
                 multiplier = 5;
