@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 timespan = 'hour';
                 break;
             case '1M':
-                fromDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                multiplier = 2;
-                timespan = 'hour';
+                fromDate = new Date(now.getTime());
+                fromDate.setMonth(now.getMonth() - 1);
+                multiplier = 1;
+                timespan = 'day';
                 break;
             case '1Y':
                 fromDate = new Date(now.getTime());
@@ -47,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fromDate = fromDate.toISOString().split('T')[0];
         const toDate = new Date().toISOString().split('T')[0];
-        console.log(`Fetching data from ${fromDate} to ${toDate}`);
 
         try {
             const response = await fetch(`https://api.polygon.io/v2/aggs/ticker/${stockTicker}/range/${multiplier}/${timespan}/${fromDate}/${toDate}?apiKey=${apiKey}`);
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     value: item.c,
                 }));
 
-                // Filter for the most recent market day for the 1D range
+                // Filter for the most recent market day
                 if (range === '1D') {
                     const latestDay = Math.max(...results.map(item => item.time * 1000));
                     const startOfDay = new Date(latestDay);
