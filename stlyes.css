@@ -9,7 +9,7 @@ html, body {
 }
 
 #chart-container {
-    height: calc(100% - 60px); /* Adjusted to leave space for buttons */
+    height: calc(100% - 40px); /* Reduced height to leave more space for buttons */
     width: 100%;
     position: relative;
     top: 0;
@@ -52,10 +52,10 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 5px 20px; /* Reduced padding */
     box-sizing: border-box;
-    background: transparent; /* Make background transparent */
-    margin-top: 10px; /* Moved the buttons down */
+    background: transparent;
+    margin-top: 0px; /* Adjusted margin to fit buttons */
 }
 
 #buttons-container {
@@ -73,31 +73,32 @@ html, body {
     justify-content: flex-end;
 }
 
-button {
+button.range-button, button.toggle-button {
     font-family: 'Open Sans', sans-serif;
     font-size: 12px;
     padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
+    margin: 5px;
     border: 1px solid lightgrey;
     background-color: transparent;
+    border-radius: 5px;
+    cursor: pointer;
     color: white;
 }
 
-button:hover {
-    background-color: rgba(6, 203, 248, 0.5);
-    color: black;
-}
-
-button:active {
-    background-color: rgba(6, 203, 248, 0.7);
-    color: black;
-}
-
-.range-button.selected,
-.toggle-button.selected {
+button.range-button.selected, button.toggle-button.selected {
     background-color: lightgrey;
     color: black;
+}
+
+button.range-button:hover:not(.selected), button.toggle-button:hover:not(.selected) {
+    background-color: darkgrey;
+    color: white;
+    border: 1px solid white;
+}
+
+button.range-button:active:not(.selected), button.toggle-button:active:not(.selected) {
+    background-color: rgba(6, 203, 248, 0.7);
+    color: white;
 }
 
 @media (max-width: 768px) {
@@ -108,7 +109,7 @@ button:active {
     #controls-container {
         flex-wrap: wrap;
         gap: 8px;
-        padding: 10px;
+        padding: 5px; /* Reduced padding */
     }
     #buttons-container, #toggle-container {
         width: 100%;
@@ -125,18 +126,4 @@ button:active {
     button {
         padding: 6px 10px;
     }
-}
-
-/* Ticker animation styles */
-.ticker-container {
-    overflow: hidden;
-    display: inline-block;
-    position: relative;
-    height: 1em;
-}
-
-.ticker {
-    display: inline-block;
-    position: absolute;
-    transition: transform 0.5s ease-in-out;
 }
