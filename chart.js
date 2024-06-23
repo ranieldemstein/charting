@@ -228,14 +228,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const toolTipWidth = 160; // Increased width
         const toolTip = document.createElement('div');
         toolTip.style = `width: ${toolTipWidth}px; position: absolute; display: none; padding: 8px; box-sizing: border-box; font-size: 12px; text-align: center; z-index: 1000; top: 10px; left: 12px; pointer-events: none; border-radius: 10px; border-bottom: none; font-family: 'Open Sans', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`;
-        toolTip.style.background = `rgba(0, 0, 0, 0.7)`; // Darker background for better visibility
+        toolTip.style.background = `linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)`; // Gradient background
         toolTip.style.color = 'white';
         toolTip.style.borderColor = 'rgba( 239, 83, 80, 1)';
         container.appendChild(toolTip);
 
         // Create the magnifier overlay with glow on the sides and white color
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 95%; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 2.5%;`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: calc(100% + 5px); background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 2.5%;`; // Increased height by 5px and adjusted top position
         container.appendChild(magnifierOverlay);
 
         // Create a container for the tooltip text
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
             magnifierOverlay.style.top = '2.5%';
             magnifierOverlay.style.width = `${toolTipWidth}px`;
-            magnifierOverlay.style.height = '95%';
+            magnifierOverlay.style.height = 'calc(100% + 5px)'; // Increased height by 5px
         });
 
         async function setChartRange(range) {
