@@ -364,26 +364,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add the 'selected' class to the clicked button
                 button.classList.add('selected');
             });
-            button.addEventListener('mouseover', () => {
-                if (!button.classList.contains('selected')) {
-                    button.style.backgroundColor = 'darkgrey';
-                    button.style.color = 'white';
-                    button.style.border = '1px solid white';
-                }
-            });
-            button.addEventListener('mouseout', () => {
-                if (!button.classList.contains('selected')) {
-                    button.style.backgroundColor = 'transparent';
-                    button.style.color = 'white';
-                    button.style.border = '1px solid lightgrey';
-                }
-            });
-            button.addEventListener('mousedown', () => button.style.backgroundColor = 'rgba(6, 203, 248, 0.7)');
-            button.addEventListener('mouseup', () => {
-                if (!button.classList.contains('selected')) {
-                    button.style.backgroundColor = 'darkgrey';
-                }
-            });
             buttonsContainer.appendChild(button);
         });
 
