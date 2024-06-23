@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 2.5%;`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 0px;`;
         setMagnifierOverlayHeight();
         window.addEventListener('resize', setMagnifierOverlayHeight); // Adjust on window resize
         container.appendChild(magnifierOverlay);
@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
             toolTip.style.top = '10px';
 
             magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
-            magnifierOverlay.style.top = '2.5%';
+            magnifierOverlay.style.top = '0px';
             magnifierOverlay.style.width = `${toolTipWidth}px`;
         });
 
