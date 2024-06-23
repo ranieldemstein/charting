@@ -397,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mode: LightweightCharts.PriceScaleMode.Percentage,
             });
             // Remove the 'selected' class from all toggle buttons
-            document.querySelectorAll('.toggle-button').forEach btn => btn.classList.remove('selected'));
+            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('selected'));
             // Add the 'selected' class to the clicked button
             percentageButton.classList.add('selected');
         });
