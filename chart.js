@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case '1M':
                 fromDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                multiplier = 1;
+                multiplier = 2;
                 timespan = 'hour';
                 break;
             case '1Y':
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
             const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
             toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
-            toolTipText.querySelector('.stock-price').textContent = `$${price.toFixed(2)}`;
+            toolTipText.querySelector('.stock-price').textContent = `$${price.value.toFixed(2)}`;
             toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
             toolTipText.querySelector('.stock-change').style.color = changeColor;
 
