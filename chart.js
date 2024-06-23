@@ -235,14 +235,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create the magnifier overlay with glow on the sides and white color
         function setMagnifierOverlayHeight() {
-            const viewportHeight = window.innerHeight;
-            let magnifierHeight;
-
-            if (viewportHeight <= 768) { // Mobile
-                magnifierHeight = 415; // Adjust height for mobile
-            } else { // Desktop
-                magnifierHeight = 395; // Adjust height for desktop
-            }
+            const chartHeight = chartElement.clientHeight;
+            const magnifierHeight = chartHeight * 1.1; // Expand 10% beyond the x-axis
 
             magnifierOverlay.style.height = `${magnifierHeight}px`;
         }
