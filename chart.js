@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 multiplier = 5;
                 timespan = 'minute';
                 break;
-            case '1W':  // Adjusted 1-week range
+            case '1W':
                 fromDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
                 multiplier = 1;
                 timespan = 'hour';
                 break;
-            case '1M':  // Adjusted 1-month range
+            case '1M':
                 fromDate = new Date(now.getTime());
                 fromDate.setMonth(now.getMonth() - 1);
                 fromDate = new Date(fromDate.setHours(0, 0, 0, 0)); // Start from the beginning of the day
@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         fromDate = fromDate.toISOString().split('T')[0];
         const toDate = new Date().toISOString().split('T')[0];
+        console.log(`Fetching data from ${fromDate} to ${toDate}`);
 
         try {
             const response = await fetch(`https://api.polygon.io/v2/aggs/ticker/${stockTicker}/range/${multiplier}/${timespan}/${fromDate}/${toDate}?apiKey=${apiKey}`);
