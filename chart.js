@@ -234,8 +234,23 @@ document.addEventListener('DOMContentLoaded', function() {
         container.appendChild(toolTip);
 
         // Create the magnifier overlay with glow on the sides and white color
+        function setMagnifierOverlayHeight() {
+            const viewportHeight = window.innerHeight;
+            let magnifierHeight;
+
+            if (viewportHeight <= 768) { // Mobile
+                magnifierHeight = 395; // Adjust height for mobile
+            } else { // Desktop
+                magnifierHeight = 410; // Adjust height for desktop
+            }
+
+            magnifierOverlay.style.height = `${magnifierHeight}px`;
+        }
+
         const magnifierOverlay = document.createElement('div');
-        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; height: 395px; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 2.5%;`;
+        magnifierOverlay.style = `width: ${toolTipWidth}px; position: absolute; display: none; background: rgba(255, 255, 255, 0.1); box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.5); border-radius: 10px; pointer-events: none; z-index: 998; top: 2.5%;`;
+        setMagnifierOverlayHeight();
+        window.addEventListener('resize', setMagnifierOverlayHeight); // Adjust on window resize
         container.appendChild(magnifierOverlay);
 
         // Create a container for the tooltip text
@@ -291,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function() {
             magnifierOverlay.style.left = `${Math.min(Math.max(param.point.x - halfTooltipWidth, priceScaleWidth), priceScaleWidth + timeScaleWidth - toolTipWidth)}px`;
             magnifierOverlay.style.top = '2.5%';
             magnifierOverlay.style.width = `${toolTipWidth}px`;
-            magnifierOverlay.style.height = '395px'; // Set height to 395px
         });
 
         async function setChartRange(range) {
