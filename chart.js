@@ -29,9 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 timespan = 'hour';
                 break;
             case '1M':
-                fromDate = new Date(now.getTime());
-                fromDate.setMonth(now.getMonth() - 1);
-                fromDate.setHours(0, 0, 0, 0); // Start from the beginning of the day
+                fromDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
                 multiplier = 1;
                 timespan = 'hour';
                 break;
