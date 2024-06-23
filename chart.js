@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
             case '1M':
                 fromDate = new Date(now.getTime());
                 fromDate.setMonth(now.getMonth() - 1);
-                fromDate = new Date(fromDate.setHours(0, 0, 0, 0)); // Start from the beginning of the day
                 multiplier = 1;
                 timespan = 'hour';
                 break;
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }));
 
                 // Filter for the most recent market day
-                if (range === '1D') {
+                if (range === '1D' || range === '1M') {
                     const latestDay = Math.max(...results.map(item => item.time * 1000));
                     const startOfDay = new Date(latestDay);
                     startOfDay.setHours(0, 0, 0, 0);
@@ -326,14 +325,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 lineColor: lineColor,
             });
 
-            if (range === '1D') {
+            if (range === '1D' || range === '1M') {
                 chart.applyOptions({
                     timeScale: {
                         timeVisible: true,
                         secondsVisible: false,
                         tickMarkFormatter: (time, tickMarkType, locale) => {
                             const date = new Date(time * 1000);
-                            return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }); // Use local timezone
+                            return range === '1D'
+                                ? date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) // Use local timezone
+                                : date.toLocaleDateString('en-US'); // Use local timezone
                         },
                     },
                 });
