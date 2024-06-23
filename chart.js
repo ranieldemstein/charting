@@ -359,7 +359,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             button.addEventListener('click', () => {
                 setChartRange(range);
+                // Remove the 'selected' class from all buttons
                 document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('selected'));
+                // Add the 'selected' class to the clicked button
                 button.classList.add('selected');
             });
             button.addEventListener('mouseover', () => {
@@ -396,15 +398,19 @@ document.addEventListener('DOMContentLoaded', function() {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Normal,
             });
+            // Remove the 'selected' class from all toggle buttons
+            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('selected'));
+            // Add the 'selected' class to the clicked button
             priceButton.classList.add('selected');
-            percentageButton.classList.remove('selected');
         });
 
         percentageButton.addEventListener('click', () => {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Percentage,
             });
-            priceButton.classList.remove('selected');
+            // Remove the 'selected' class from all toggle buttons
+            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('selected'));
+            // Add the 'selected' class to the clicked button
             percentageButton.classList.add('selected');
         });
 
