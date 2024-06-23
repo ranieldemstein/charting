@@ -25,14 +25,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case '1W':  // Adjusted 1-week range
                 fromDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                multiplier = 5;
-                timespan = 'minute';
+                multiplier = 1;
+                timespan = 'hour';
                 break;
             case '1M':  // Adjusted 1-month range
                 fromDate = new Date(now.getTime());
                 fromDate.setMonth(now.getMonth() - 1);
-                multiplier = 5;
-                timespan = 'minute';
+                fromDate = new Date(fromDate.setHours(0, 0, 0, 0)); // Start from the beginning of the day
+                multiplier = 1;
+                timespan = 'hour';
                 break;
             case '1Y':
                 fromDate = new Date(now.getTime());
