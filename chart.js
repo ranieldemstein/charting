@@ -176,11 +176,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function setLegendText(name, range, price, change, isPositive) {
             const stockInfo = `${name} | ${range}`;
-            legend.querySelector('.stock-info').textContent = stockInfo;
-            legend.querySelector('.stock-price').textContent = `$${price}`;
+            const stockPriceElement = document.querySelector('.stock-price');
+            
+            // Initialize odometer if not already initialized
+            if (!stockPriceElement.odometer) {
+                stockPriceElement.odometer = new Odometer({
+                    el: stockPriceElement,
+                    value: price,
+                    format: '(,ddd).dd',
+                    theme: 'default'
+                });
+            }
+
+            document.querySelector('.stock-info').textContent = stockInfo;
+            stockPriceElement.odometer.update(price);
             const changeColor = isPositive ? '#06cbf8' : 'red';
-            legend.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
-            legend.querySelector('.stock-change').style.color = changeColor;
+            document.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
+            document.querySelector('.stock-change').style.color = changeColor;
         }
 
         function updateLegendOnHover(param, seriesData, currentRange) {
@@ -192,7 +204,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
                 const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
                 toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
-                toolTipText.querySelector('.stock-price').textContent = `$${price.value.toFixed(2)}`;
+                if (!toolTipText.querySelector('.stock-price').odometer) {
+                    toolTipText.querySelector('.stock-price').odometer = new Odometer({
+                        el: toolTipText.querySelector('.stock-price'),
+                        value: price.value,
+                        format: '(,ddd).dd',
+                        theme: 'default'
+                    });
+                }
+                toolTipText.querySelector('.stock-price').odometer.update(price.value);
                 toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
                 toolTipText.querySelector('.stock-change').style.color = changeColor;
             }
@@ -252,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toolTipText.style = `position: relative; z-index: 1; color: white; top: 0;`;
         toolTipText.innerHTML = `
             <div class="stock-info"></div>
-            <div class="stock-price"></div>
+            <div class="stock-price odometer"></div>
             <div class="stock-change"></div>
         `;
         toolTip.appendChild(toolTipText);
@@ -282,7 +302,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const changeColor = change.priceChange >= 0 ? '#06cbf8' : 'red';
             const stockInfo = `<span style="font-weight: bold;">${symbolName}</span> | ${dateStr}`;
             toolTipText.querySelector('.stock-info').innerHTML = stockInfo;
-            toolTipText.querySelector('.stock-price').textContent = `$${price.toFixed(2)}`;
+            if (!toolTipText.querySelector('.stock-price').odometer) {
+                toolTipText.querySelector('.stock-price').odometer = new Odometer({
+                    el: toolTipText.querySelector('.stock-price'),
+                    value: price,
+                    format: '(,ddd).dd',
+                    theme: 'default'
+                });
+            }
+            toolTipText.querySelector('.stock-price').odometer.update(price);
             toolTipText.querySelector('.stock-change').textContent = `${change.priceChange >= 0 ? '+' : ''}${change.priceChange} (${change.percentChange}%)`;
             toolTipText.querySelector('.stock-change').style.color = changeColor;
 
