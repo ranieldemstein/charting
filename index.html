@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Chart</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/themes/odometer-theme-default.min.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
         html, body {
@@ -133,7 +134,7 @@
         <div id="chart"></div>
         <div id="legend">
             <div class="stock-info"></div>
-            <div class="stock-price"></div>
+            <div class="stock-price odometer"></div> <!-- Add odometer class here -->
             <div class="stock-change"></div>
         </div>
     </div>
@@ -150,6 +151,7 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
     <script src="chart.js"></script>
