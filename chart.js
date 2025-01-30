@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('Chart created:', chart);
 
-        const areaSeries = chart.addAreaSeries({
+        const areaSeries = chart.addSeries(LightweightCharts.AreaSeries, {
             topColor: '#06cbf8',
             bottomColor: 'rgba(6, 203, 248, 0.28)',
             lineColor: '#06cbf8',
