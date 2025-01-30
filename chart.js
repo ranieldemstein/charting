@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     console.log("✅ Chart created successfully!");
 
-    // ✅ Corrected to v5 API
+    // ✅ Corrected v5 API: Use `addSeries()`
     const lineSeries = chart.addSeries(LightweightCharts.LineSeries, { lineWidth: 2 });
 
     async function fetchStockData() {
@@ -49,6 +49,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             lineSeries.setData(chartData);
 
             console.log("✅ Chart updated successfully.");
+
+            // ✅ Update Odometer for stock price
+            document.querySelector('.stock-price').innerHTML = last.toFixed(2);
+
+            // ✅ Apply color to stock change
+            const stockChangeElement = document.querySelector('.stock-change');
+            const changeValue = (last - first).toFixed(2);
+            stockChangeElement.innerHTML = changeValue;
+            stockChangeElement.style.color = last >= first ? '#06cbf8' : '#ff0000';
+
         } catch (error) {
             console.error("❌ Error fetching stock data:", error);
         }
