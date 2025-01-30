@@ -19,9 +19,11 @@
         }
 
         #chart-container {
-            height: calc(100% - 60px);
+            height: calc(100% - 60px); /* Adjusted to leave space for buttons */
             width: 100%;
             position: relative;
+            top: 0;
+            left: 0;
             background: transparent;
         }
 
@@ -63,7 +65,7 @@
             padding: 10px 20px;
             box-sizing: border-box;
             background: transparent;
-            margin-top: 10px;
+            margin-top: 10px; /* Move buttons down */
         }
 
         #buttons-container {
@@ -85,6 +87,7 @@
             font-family: 'Open Sans', sans-serif;
             font-size: 12px;
             padding: 6px 12px;
+            margin: 5px;
             border: 1px solid white;
             background-color: transparent;
             border-radius: 5px;
@@ -98,19 +101,10 @@
             color: black;
         }
 
-        /* ✅ Odometer Speed Adjustment (Restored) */
-        .odometer.odometer-animating-up .odometer-ribbon-inner,
-        .odometer.odometer-animating-down .odometer-animating .odometer-ribbon-inner {
-            -webkit-transition-duration: 0.25s !important;
-            -moz-transition-duration: 0.25s !important;
-            -ms-transition-duration: 0.25s !important;
-            -o-transition-duration: 0.25s !important;
-            transition-duration: 0.25s !important;
-        }
-
         @media (max-width: 768px) {
             #chart-container {
                 width: 100vw;
+                left: 0;
             }
             #controls-container {
                 flex-wrap: wrap;
@@ -121,9 +115,27 @@
                 width: 100%;
                 justify-content: space-between;
             }
+            #buttons-container {
+                flex: 1;
+                justify-content: flex-start;
+            }
+            #toggle-container {
+                flex: 1;
+                justify-content: flex-end;
+            }
             button {
                 padding: 6px 10px;
             }
+        }
+
+        /* Odometer speed adjustment */
+        .odometer.odometer-animating-up .odometer-ribbon-inner,
+        .odometer.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+            -webkit-transition-duration: 0.25s !important;
+            -moz-transition-duration: 0.25s !important;
+            -ms-transition-duration: 0.25s !important;
+            -o-transition-duration: 0.25s !important;
+            transition-duration: 0.25s !important;
         }
     </style>
 </head>
