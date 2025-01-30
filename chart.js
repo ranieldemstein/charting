@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
             layout: {
                 textColor: 'white',
                 background: { type: 'solid', color: 'transparent' },
+                attributionLogo: false,
             },
             rightPriceScale: {
                 scaleMargins: {
