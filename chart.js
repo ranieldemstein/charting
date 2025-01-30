@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Ensure chart has proper width and height
         if (chartElement.clientWidth === 0 || chartElement.clientHeight === 0) {
-            console.error("Chart container has zero dimensions, delaying initialization...");
+            console.error("Chart container has zero dimensions, retrying...");
             setTimeout(createStockChart, 500); // Retry in 500ms
             return;
         }
@@ -130,19 +130,29 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Chart created:', chart);
 
         // ✅ Ensure addSeries() is correctly structured
-        const areaSeries = chart.addSeries({
-            type: 'Area', // Correct method for v5
-            topColor: '#06cbf8',
-            bottomColor: 'rgba(6, 203, 248, 0.28)',
-            lineColor: '#06cbf8',
-            lineWidth: 2,
-        });
+        try {
+            const areaSeries = chart.addSeries({
+                type: 'Area', // Correct method for v5
+                topColor: '#06cbf8',
+                bottomColor: 'rgba(6, 203, 248, 0.28)',
+                lineColor: '#06cbf8',
+                lineWidth: 2,
+            });
 
-        console.log('Area series added:', areaSeries);
+            console.log('Area series added:', areaSeries);
+        } catch (error) {
+            console.error("Error adding series:", error);
+            return;
+        }
 
         async function setChartRange(range) {
             console.log('Updating chart for range:', range);
             const stockData = await fetchStockData(range);
+            if (!stockData || stockData.length === 0) {
+                console.error("No data received, skipping chart update.");
+                return;
+            }
+
             areaSeries.setData(stockData);
 
             // ✅ Apply dynamic colors based on price movement
