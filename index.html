@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Chart</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/themes/odometer-theme-default.min.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
@@ -119,7 +118,36 @@
     <script>
         const script = document.createElement("script");
         script.src = "https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.0/dist/lightweight-charts.standalone.production.js";
-        script.onload = () => console.log("✅ TradingView Loaded");
+        script.onload = () => {
+            console.log("✅ TradingView Loaded");
+
+            // Check if TradingView is working
+            console.log("TradingView Version:", LightweightCharts.version);
+            console.log("Available Functions:", Object.keys(LightweightCharts));
+
+            // Manually create a test chart
+            const chartElement = document.getElementById("chart");
+            const debugChart = LightweightCharts.createChart(chartElement, {
+                width: 600,
+                height: 400,
+                layout: { textColor: "white", background: { color: "black" } },
+            });
+
+            console.log("✅ Chart Created:", debugChart);
+            console.log("Chart Methods:", Object.keys(debugChart));
+
+            // Try adding a test series
+            try {
+                const testSeries = debugChart.addSeries({ type: "Line" });
+                testSeries.setData([
+                    { time: 1704067200, value: 100 },
+                    { time: 1704153600, value: 110 }
+                ]);
+                console.log("✅ Test Series Added:", testSeries);
+            } catch (error) {
+                console.error("❌ Error Adding Test Series:", error);
+            }
+        };
         document.head.appendChild(script);
     </script>
 
