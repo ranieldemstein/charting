@@ -115,15 +115,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         console.log('Chart created successfully');
 
-        // **🚨 Ensure addSeries() works for TradingView v5**
+        // **🚨 Ensure `addSeries()` uses the correct format**
         try {
             const areaSeries = chart.addSeries({
                 type: 'Area',
                 priceScaleId: 'right',
-                topColor: '#06cbf8',
-                bottomColor: 'rgba(6, 203, 248, 0.28)',
-                lineColor: '#06cbf8',
-                lineWidth: 2,
             });
 
             console.log('Area series added:', areaSeries);
@@ -131,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             async function setChartRange(range) {
                 console.log('Updating chart for range:', range);
                 const stockData = await fetchStockData(range);
-                
+
                 if (!stockData || stockData.length === 0) {
                     console.error("No stock data available, skipping update.");
                     return;
