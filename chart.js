@@ -77,6 +77,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('Chart element found:', chartElement);
 
+        // Ensure chart has proper width and height
+        if (chartElement.clientWidth === 0 || chartElement.clientHeight === 0) {
+            console.error("Chart container has zero dimensions, delaying initialization...");
+            setTimeout(createStockChart, 500); // Retry in 500ms
+            return;
+        }
+
         const chart = LightweightCharts.createChart(chartElement, {
             width: chartElement.clientWidth,
             height: chartElement.clientHeight,
@@ -122,9 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('Chart created:', chart);
 
-        // ✅ **Updated method for adding Area Series (TradingView v5)**
+        // ✅ Ensure addSeries() is correctly structured
         const areaSeries = chart.addSeries({
-            type: 'Area',
+            type: 'Area', // Correct method for v5
             topColor: '#06cbf8',
             bottomColor: 'rgba(6, 203, 248, 0.28)',
             lineColor: '#06cbf8',
@@ -138,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const stockData = await fetchStockData(range);
             areaSeries.setData(stockData);
 
-            // ✅ **Apply dynamic colors based on price movement**
+            // ✅ Apply dynamic colors based on price movement
             const firstPrice = stockData[0]?.value || 0;
             const lastPrice = stockData[stockData.length - 1]?.value || 0;
             const isPositive = lastPrice >= firstPrice;
@@ -154,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         setChartRange('1D'); // Default to 1D
 
-        // ✅ **Handle range button clicks**
+        // ✅ Handle range button clicks
         document.querySelectorAll('.range-button').forEach(button => {
             button.addEventListener('click', () => {
                 document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('selected'));
@@ -163,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // ✅ **Handle price & percentage toggle buttons**
+        // ✅ Handle price & percentage toggle buttons
         document.getElementById('toggle-price').addEventListener('click', () => {
             chart.priceScale('right').applyOptions({
                 mode: LightweightCharts.PriceScaleMode.Normal,
@@ -180,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('toggle-percentage').classList.add('selected');
         });
 
-        // ✅ **Resize Chart on Window Resize**
+        // ✅ Resize Chart on Window Resize
         window.addEventListener('resize', () => {
             chart.resize(chartElement.clientWidth, chartElement.clientHeight);
         });
