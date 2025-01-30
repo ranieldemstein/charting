@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function () {
     console.log('DOM fully loaded and parsed');
 
     function getStockTicker() {
@@ -77,6 +77,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log('Chart element found:', chartElement);
 
+        // **🚨 Ensure chart container has a valid size before proceeding**
+        if (chartElement.clientWidth === 0 || chartElement.clientHeight === 0) {
+            console.error("Chart container has zero dimensions, retrying...");
+            setTimeout(createStockChart, 500);
+            return;
+        }
+
+        // **🚨 Ensure TradingView Library is Loaded**
+        if (typeof LightweightCharts === 'undefined') {
+            console.error('LightweightCharts library is not loaded.');
+            return;
+        }
+
+        console.log('Creating chart...');
         const chart = LightweightCharts.createChart(chartElement, {
             width: chartElement.clientWidth,
             height: chartElement.clientHeight,
@@ -94,28 +108,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 vertLines: { visible: false },
                 horzLines: { visible: false },
             },
+            crosshair: {
+                mode: LightweightCharts.CrosshairMode.Normal,
+            },
         });
 
-        console.log('Chart created:', chart);
+        console.log('Chart created successfully');
 
-        const areaSeries = chart.addSeries({
-            type: 'Area',
-            priceScaleId: 'right',
-            topColor: '#06cbf8',
-            bottomColor: 'rgba(6, 203, 248, 0.28)',
-            lineColor: '#06cbf8',
-            lineWidth: 2,
-        });
+        // **🚨 Ensure addSeries() works for TradingView v5**
+        try {
+            const areaSeries = chart.addSeries({
+                type: 'Area',
+                priceScaleId: 'right',
+                topColor: '#06cbf8',
+                bottomColor: 'rgba(6, 203, 248, 0.28)',
+                lineColor: '#06cbf8',
+                lineWidth: 2,
+            });
 
-        console.log('Area series added:', areaSeries);
+            console.log('Area series added:', areaSeries);
 
-        async function setChartRange(range) {
-            const stockData = await fetchStockData(range);
-            areaSeries.setData(stockData);
-            chart.timeScale().fitContent();
+            async function setChartRange(range) {
+                console.log('Updating chart for range:', range);
+                const stockData = await fetchStockData(range);
+                
+                if (!stockData || stockData.length === 0) {
+                    console.error("No stock data available, skipping update.");
+                    return;
+                }
+
+                areaSeries.setData(stockData);
+                chart.timeScale().fitContent();
+            }
+
+            setChartRange('1D');
+
+            document.querySelectorAll('.range-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
+                    setChartRange(button.id);
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                chart.resize(chartElement.clientWidth, chartElement.clientHeight);
+            });
+
+            console.log('Chart initialized successfully.');
+        } catch (error) {
+            console.error("Error adding series:", error);
         }
-
-        setChartRange('1D');
     }
 
     createStockChart();
