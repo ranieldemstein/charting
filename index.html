@@ -19,7 +19,7 @@
         }
 
         #chart-container {
-            height: calc(100% - 60px); /* Adjusted to leave space for buttons e */
+            height: calc(100% - 60px);
             width: 100%;
             position: relative;
             top: 0;
@@ -42,19 +42,9 @@
             color: white;
         }
 
-        .stock-info {
-            font-size: 14px;
-        }
-
-        .stock-price {
-            font-size: 24px;
-            margin: 4px 0px;
-        }
-
-        .stock-change {
-            font-size: 14px;
-            font-weight: bold;
-        }
+        .stock-info { font-size: 14px; }
+        .stock-price { font-size: 24px; margin: 4px 0px; }
+        .stock-change { font-size: 14px; font-weight: bold; }
 
         #controls-container {
             position: relative;
@@ -65,22 +55,14 @@
             padding: 10px 20px;
             box-sizing: border-box;
             background: transparent;
-            margin-top: 10px; /* Move buttons down */
+            margin-top: 10px;
         }
 
-        #buttons-container {
+        #buttons-container, #toggle-container {
             display: flex;
             flex-direction: row;
             gap: 8px;
             flex: 1;
-        }
-
-        #toggle-container {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            flex: 1;
-            justify-content: flex-end;
         }
 
         button.range-button, button.toggle-button {
@@ -99,6 +81,12 @@
         button.range-button.selected, button.toggle-button.selected {
             background-color: white;
             color: black;
+        }
+
+        @media (max-width: 768px) {
+            #chart-container { width: 100vw; left: 0; }
+            #controls-container { flex-wrap: wrap; gap: 8px; padding: 10px; }
+            button { padding: 6px 10px; }
         }
     </style>
 </head>
@@ -124,8 +112,18 @@
         </div>
     </div>
 
+    <!-- Load External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
-    <script src="https://unpkg.com/lightweight-charts@5.0.0/dist/lightweight-charts.standalone.production.js"></script>
+
+    <!-- 🔥 Force a Clean TradingView Load -->
+    <script>
+        const script = document.createElement("script");
+        script.src = "https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.0/dist/lightweight-charts.standalone.production.js";
+        script.onload = () => console.log("✅ TradingView Loaded");
+        document.head.appendChild(script);
+    </script>
+
+    <!-- Load Chart Logic -->
     <script src="chart.js"></script>
 </body>
 </html>
