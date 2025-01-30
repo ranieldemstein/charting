@@ -6,146 +6,15 @@
     <title>Stock Chart</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/themes/odometer-theme-default.min.css" />
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            background: transparent;
-            overflow: hidden;
-            font-family: 'Open Sans', sans-serif;
-        }
-
-        #chart-container {
-            height: calc(100% - 60px); /* Adjusted to leave space for buttons */
-            width: 100%;
-            position: relative;
-            top: 0;
-            left: 0;
-            background: transparent;
-        }
-
-        #chart {
-            height: 100%;
-            width: 100%;
-            background: transparent;
-        }
-
-        #legend {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 1;
-            font-family: 'Open Sans', sans-serif;
-            color: white;
-        }
-
-        .stock-info {
-            font-size: 14px;
-        }
-
-        .stock-price {
-            font-size: 24px;
-            margin: 4px 0px;
-        }
-
-        .stock-change {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        #controls-container {
-            position: relative;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            box-sizing: border-box;
-            background: transparent;
-            margin-top: 10px; /* Move buttons down */
-        }
-
-        #buttons-container {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            flex: 1;
-        }
-
-        #toggle-container {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            flex: 1;
-            justify-content: flex-end;
-        }
-
-        button.range-button, button.toggle-button {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 12px;
-            padding: 6px 12px;
-            margin: 5px;
-            border: 1px solid white;
-            background-color: transparent;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-            outline: none;
-        }
-
-        button.range-button.selected, button.toggle-button.selected {
-            background-color: white;
-            color: black;
-        }
-
-        @media (max-width: 768px) {
-            #chart-container {
-                width: 100vw;
-                left: 0;
-            }
-            #controls-container {
-                flex-wrap: wrap;
-                gap: 8px;
-                padding: 10px;
-            }
-            #buttons-container, #toggle-container {
-                width: 100%;
-                justify-content: space-between;
-            }
-            #buttons-container {
-                flex: 1;
-                justify-content: flex-start;
-            }
-            #toggle-container {
-                flex: 1;
-                justify-content: flex-end;
-            }
-            button {
-                padding: 6px 10px;
-            }
-        }
-
-        /* Odometer speed adjustment */
-        .odometer.odometer-animating-up .odometer-ribbon-inner,
-        .odometer.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
-            -webkit-transition-duration: 0.25s !important;
-            -moz-transition-duration: 0.25s !important;
-            -ms-transition-duration: 0.25s !important;
-            -o-transition-duration: 0.25s !important;
-            transition-duration: 0.25s !important;
-        }
-    </style>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
     <div id="chart-container">
         <div id="chart"></div>
         <div id="legend">
-            <div class="stock-info"></div>
-            <div class="stock-price odometer"></div>
-            <div class="stock-change"></div>
+            <div class="stock-info">AAPL</div>
+            <div class="stock-price odometer">0</div>
+            <div class="stock-change">0</div>
         </div>
     </div>
     <div id="controls-container">
@@ -162,7 +31,6 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script src="chart.js"></script>
 </body>
 </html>
