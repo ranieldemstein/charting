@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Chart</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/themes/odometer-theme-default.min.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
@@ -18,7 +19,7 @@
         }
 
         #chart-container {
-            height: calc(100% - 60px);
+            height: calc(100% - 60px); /* Adjusted to leave space for buttons */
             width: 100%;
             position: relative;
             top: 0;
@@ -41,9 +42,19 @@
             color: white;
         }
 
-        .stock-info { font-size: 14px; }
-        .stock-price { font-size: 24px; margin: 4px 0px; }
-        .stock-change { font-size: 14px; font-weight: bold; }
+        .stock-info {
+            font-size: 14px;
+        }
+
+        .stock-price {
+            font-size: 24px;
+            margin: 4px 0px;
+        }
+
+        .stock-change {
+            font-size: 14px;
+            font-weight: bold;
+        }
 
         #controls-container {
             position: relative;
@@ -54,14 +65,22 @@
             padding: 10px 20px;
             box-sizing: border-box;
             background: transparent;
-            margin-top: 10px;
+            margin-top: 10px; /* Move buttons down */
         }
 
-        #buttons-container, #toggle-container {
+        #buttons-container {
             display: flex;
             flex-direction: row;
             gap: 8px;
             flex: 1;
+        }
+
+        #toggle-container {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            flex: 1;
+            justify-content: flex-end;
         }
 
         button.range-button, button.toggle-button {
@@ -83,9 +102,40 @@
         }
 
         @media (max-width: 768px) {
-            #chart-container { width: 100vw; left: 0; }
-            #controls-container { flex-wrap: wrap; gap: 8px; padding: 10px; }
-            button { padding: 6px 10px; }
+            #chart-container {
+                width: 100vw;
+                left: 0;
+            }
+            #controls-container {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px;
+            }
+            #buttons-container, #toggle-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+            #buttons-container {
+                flex: 1;
+                justify-content: flex-start;
+            }
+            #toggle-container {
+                flex: 1;
+                justify-content: flex-end;
+            }
+            button {
+                padding: 6px 10px;
+            }
+        }
+
+        /* Odometer speed adjustment */
+        .odometer.odometer-animating-up .odometer-ribbon-inner,
+        .odometer.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+            -webkit-transition-duration: 0.25s !important;
+            -moz-transition-duration: 0.25s !important;
+            -ms-transition-duration: 0.25s !important;
+            -o-transition-duration: 0.25s !important;
+            transition-duration: 0.25s !important;
         }
     </style>
 </head>
@@ -111,47 +161,8 @@
         </div>
     </div>
 
-    <!-- Load External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
-
-    <!-- 🔥 Force a Clean TradingView Load -->
-    <script>
-        const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.0/dist/lightweight-charts.standalone.production.js";
-        script.onload = () => {
-            console.log("✅ TradingView Loaded");
-
-            // Check if TradingView is working
-            console.log("TradingView Version:", LightweightCharts.version);
-            console.log("Available Functions:", Object.keys(LightweightCharts));
-
-            // Manually create a test chart
-            const chartElement = document.getElementById("chart");
-            const debugChart = LightweightCharts.createChart(chartElement, {
-                width: 600,
-                height: 400,
-                layout: { textColor: "white", background: { color: "black" } },
-            });
-
-            console.log("✅ Chart Created:", debugChart);
-            console.log("Chart Methods:", Object.keys(debugChart));
-
-            // Try adding a test series
-            try {
-                const testSeries = debugChart.addSeries({ type: "Line" });
-                testSeries.setData([
-                    { time: 1704067200, value: 100 },
-                    { time: 1704153600, value: 110 }
-                ]);
-                console.log("✅ Test Series Added:", testSeries);
-            } catch (error) {
-                console.error("❌ Error Adding Test Series:", error);
-            }
-        };
-        document.head.appendChild(script);
-    </script>
-
-    <!-- Load Chart Logic -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script src="chart.js"></script>
 </body>
 </html>
