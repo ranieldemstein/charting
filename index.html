@@ -100,43 +100,6 @@
             background-color: white;
             color: black;
         }
-
-        @media (max-width: 768px) {
-            #chart-container {
-                width: 100vw;
-                left: 0;
-            }
-            #controls-container {
-                flex-wrap: wrap;
-                gap: 8px;
-                padding: 10px;
-            }
-            #buttons-container, #toggle-container {
-                width: 100%;
-                justify-content: space-between;
-            }
-            #buttons-container {
-                flex: 1;
-                justify-content: flex-start;
-            }
-            #toggle-container {
-                flex: 1;
-                justify-content: flex-end;
-            }
-            button {
-                padding: 6px 10px;
-            }
-        }
-
-        /* Odometer speed adjustment */
-        .odometer.odometer-animating-up .odometer-ribbon-inner,
-        .odometer.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
-            -webkit-transition-duration: 0.25s !important;
-            -moz-transition-duration: 0.25s !important;
-            -ms-transition-duration: 0.25s !important;
-            -o-transition-duration: 0.25s !important;
-            transition-duration: 0.25s !important;
-        }
     </style>
 </head>
 <body>
@@ -162,7 +125,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js"></script>
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="https://unpkg.com/lightweight-charts@5.0.0/dist/lightweight-charts.standalone.production.js"></script>
     <script src="chart.js"></script>
 </body>
 </html>
