@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function createStockChart() {
+    async function createStockChart() {
         const chartElement = document.getElementById('chart');
         if (!chartElement) {
             console.error('Chart element not found');
@@ -76,13 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         console.log('Chart element found:', chartElement);
-
-        // Ensure chart has proper width and height
-        if (chartElement.clientWidth === 0 || chartElement.clientHeight === 0) {
-            console.error("Chart container has zero dimensions, retrying...");
-            setTimeout(createStockChart, 500); // Retry in 500ms
-            return;
-        }
 
         const chart = LightweightCharts.createChart(chartElement, {
             width: chartElement.clientWidth,
@@ -97,112 +90,32 @@ document.addEventListener('DOMContentLoaded', function() {
                     bottom: 0.15,
                 },
             },
-            crosshair: {
-                mode: LightweightCharts.CrosshairMode.Normal,
-                vertLine: {
-                    visible: true,
-                    width: 2,
-                    color: 'rgba(70, 70, 70, 0.5)',
-                    labelVisible: false,
-                },
-                horzLine: {
-                    visible: false,
-                    labelVisible: false,
-                },
-            },
             grid: {
                 vertLines: { visible: false },
                 horzLines: { visible: false },
-            },
-            handleScroll: {
-                mouseWheel: false,
-                pressedMouseMove: false,
-                horzTouchDrag: false,
-                vertTouchDrag: false,
-            },
-            handleScale: {
-                axisPressedMouseMove: false,
-                mouseWheel: false,
-                pinch: false,
             },
         });
 
         console.log('Chart created:', chart);
 
-        // ✅ Ensure addSeries() is correctly structured
-        try {
-            const areaSeries = chart.addSeries({
-                type: 'Area', // Correct method for v5
-                topColor: '#06cbf8',
-                bottomColor: 'rgba(6, 203, 248, 0.28)',
-                lineColor: '#06cbf8',
-                lineWidth: 2,
-            });
+        const areaSeries = chart.addSeries({
+            type: 'Area',
+            priceScaleId: 'right',
+            topColor: '#06cbf8',
+            bottomColor: 'rgba(6, 203, 248, 0.28)',
+            lineColor: '#06cbf8',
+            lineWidth: 2,
+        });
 
-            console.log('Area series added:', areaSeries);
-        } catch (error) {
-            console.error("Error adding series:", error);
-            return;
-        }
+        console.log('Area series added:', areaSeries);
 
         async function setChartRange(range) {
-            console.log('Updating chart for range:', range);
             const stockData = await fetchStockData(range);
-            if (!stockData || stockData.length === 0) {
-                console.error("No data received, skipping chart update.");
-                return;
-            }
-
             areaSeries.setData(stockData);
-
-            // ✅ Apply dynamic colors based on price movement
-            const firstPrice = stockData[0]?.value || 0;
-            const lastPrice = stockData[stockData.length - 1]?.value || 0;
-            const isPositive = lastPrice >= firstPrice;
-
-            areaSeries.applyOptions({
-                topColor: isPositive ? '#06cbf8' : '#ff4441',
-                bottomColor: isPositive ? 'rgba(6, 203, 248, 0.28)' : 'rgba(255, 68, 65, 0.28)',
-                lineColor: isPositive ? '#06cbf8' : '#ff4441',
-            });
-
             chart.timeScale().fitContent();
         }
 
-        setChartRange('1D'); // Default to 1D
-
-        // ✅ Handle range button clicks
-        document.querySelectorAll('.range-button').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.range-button').forEach(btn => btn.classList.remove('selected'));
-                button.classList.add('selected');
-                setChartRange(button.id);
-            });
-        });
-
-        // ✅ Handle price & percentage toggle buttons
-        document.getElementById('toggle-price').addEventListener('click', () => {
-            chart.priceScale('right').applyOptions({
-                mode: LightweightCharts.PriceScaleMode.Normal,
-            });
-            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('selected'));
-            document.getElementById('toggle-price').classList.add('selected');
-        });
-
-        document.getElementById('toggle-percentage').addEventListener('click', () => {
-            chart.priceScale('right').applyOptions({
-                mode: LightweightCharts.PriceScaleMode.Percentage,
-            });
-            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('selected'));
-            document.getElementById('toggle-percentage').classList.add('selected');
-        });
-
-        // ✅ Resize Chart on Window Resize
-        window.addEventListener('resize', () => {
-            chart.resize(chartElement.clientWidth, chartElement.clientHeight);
-        });
-
-        console.log('Chart initialized successfully.');
+        setChartRange('1D');
     }
 
     createStockChart();
